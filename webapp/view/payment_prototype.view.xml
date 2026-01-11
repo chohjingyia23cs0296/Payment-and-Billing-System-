@@ -10,7 +10,7 @@
 			<!-- Payment Form Section -->
 		<VBox id="paymentFormVBox" class="sapUiMediumMargin">
 			<Title id="paymentFormTitle" text="Payment Details" level="H2"/>
-				<f:SimpleForm editable="true" layout="ResponsiveGridLayout">
+			<f:SimpleForm id="paymentFormSimpleForm" editable="true" layout="ResponsiveGridLayout">
 					<f:content>
 						<!-- Customer Name -->
 						<Label id="customerNameLabel" text="Customer Name"/>
