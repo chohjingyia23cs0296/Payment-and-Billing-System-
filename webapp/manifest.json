@@ -1,0 +1,98 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "paymentprototype",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.20.0",
+      "toolsId": "73bc182b-fd60-432e-8a6a-40d9c44dcb84"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.143.2",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "paymentprototype.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "paymentprototype.view",
+        "async": true,
+        "viewPath": "paymentprototype.view"
+      },
+      "routes": [
+        {
+          "name": "Routepayment_prototype",
+          "pattern": ":?query:",
+          "target": [
+            "Targetpayment_prototype"
+          ]
+        }
+      ],
+      "targets": {
+        "Targetpayment_prototype": {
+          "id": "payment_prototype",
+          "name": "payment_prototype"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "paymentprototype.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}
