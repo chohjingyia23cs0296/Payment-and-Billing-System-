@@ -1,0 +1,118 @@
+<mvc:View
+	controllerName="paymentprototype.controller.PaymentBilling"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m"
+	displayBlock="true">
+	<Page id="page" title="Payment & Billing">
+		<content>
+			<!-- Payment Form Section -->
+			<VBox class="sapUiMediumMargin">
+				<Title text="Payment Details" level="H2"/>
+				<f:SimpleForm editable="true" layout="ResponsiveGridLayout">
+					<f:content>
+						<!-- Customer Name -->
+						<Label text="Customer Name"/>
+						<Input 
+							id="customerName"
+							placeholder="Enter customer name"
+							value="{paymentModel>/customerName}"/>
+
+						<!-- Invoice Amount -->
+						<Label text="Invoice Amount"/>
+						<Input 
+							id="invoiceAmount"
+							placeholder="Enter amount"
+							value="{paymentModel>/amount}"
+							type="Number"/>
+
+						<!-- Invoice Number -->
+						<Label text="Invoice Number"/>
+						<Input 
+							id="invoiceNumber"
+							placeholder="Enter invoice number"
+							value="{paymentModel>/invoiceNumber}"/>
+
+						<!-- Payment Method -->
+						<Label text="Payment Method"/>
+						<Select 
+							id="paymentMethod"
+							items="{paymentModel>/paymentMethods}"
+							selectedKey="{paymentModel>/selectedMethod}">
+							<core:Item key="{paymentModel>key}" text="{paymentModel>text}"/>
+						</Select>
+
+						<!-- Due Date -->
+						<Label text="Due Date"/>
+						<DatePicker 
+							id="dueDate"
+							value="{paymentModel>/dueDate}"
+							displayFormat="yyyy-MM-dd"/>
+					</f:content>
+				</f:SimpleForm>
+
+				<!-- Action Buttons -->
+				<HBox class="sapUiSmallMarginTop" justifyContent="Center" space="Medium">
+					<Button 
+						id="submitBtn"
+						text="Submit Payment" 
+						type="Emphasized"
+						press=".onSubmitPayment"/>
+					<Button 
+						id="resetBtn"
+						text="Clear" 
+						press=".onReset"/>
+				</HBox>
+			</VBox>
+
+			<!-- Divider -->
+			<VBox class="sapUiMediumMargin">
+				<core:HTML content="&lt;hr style='margin: 20px 0;'/&gt;"/>
+			</VBox>
+
+			<!-- Billing History Section -->
+			<VBox class="sapUiMediumMargin">
+				<Title text="Recent Payments" level="H2"/>
+				<Table 
+					id="billingTable"
+					items="{paymentModel>/billingHistory}"
+					mode="SingleSelectMaster">
+					<columns>
+						<Column>
+							<Text text="Invoice #"/>
+						</Column>
+						<Column>
+							<Text text="Customer"/>
+						</Column>
+						<Column>
+							<Text text="Amount"/>
+						</Column>
+						<Column>
+							<Text text="Payment Method"/>
+						</Column>
+						<Column>
+							<Text text="Date"/>
+						</Column>
+						<Column>
+							<Text text="Status"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Text text="{paymentModel>invoiceNumber}"/>
+								<Text text="{paymentModel>customerName}"/>
+								<Text text="{paymentModel>amount}"/>
+								<Text text="{paymentModel>method}"/>
+								<Text text="{paymentModel>date}"/>
+								<ObjectStatus 
+									text="{paymentModel>status}"
+									state="{paymentModel>statusState}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</VBox>
+		</content>
+	</Page>
+</mvc:View>
