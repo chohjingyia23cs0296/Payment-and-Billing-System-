@@ -5,11 +5,11 @@
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m"
 	displayBlock="true">
-	<Page id="paymentPrototypePage" title="Payment & Billing">
+	<Page id="paymentPrototypePage" title="Payment &amp; Billing">
 		<content>
 			<!-- Payment Form Section -->
 			<VBox id="paymentFormVBox" class="sapUiMediumMargin">
-			<Title id="paymentFormTitle" text="Payment Details" level="H2"/>
+				<Title id="paymentFormTitle" text="Payment Details" level="H2"/>
 			<f:SimpleForm id="paymentFormSimpleForm" editable="true" layout="ResponsiveGridLayout">
 					<f:content>
 						<!-- Customer Name -->
