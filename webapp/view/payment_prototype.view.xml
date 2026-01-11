@@ -8,7 +8,7 @@
 	<Page id="paymentPrototypePage" title="Payment & Billing">
 		<content>
 			<!-- Payment Form Section -->
-		<VBox id="paymentFormVBox" class="sapUiMediumMargin">
+			<VBox id="paymentFormVBox" class="sapUiMediumMargin">
 			<Title id="paymentFormTitle" text="Payment Details" level="H2"/>
 			<f:SimpleForm id="paymentFormSimpleForm" editable="true" layout="ResponsiveGridLayout">
 					<f:content>
@@ -106,7 +106,9 @@
 								<Text id="billingAmountText" text="{paymentModel>amount}"/>
 								<Text id="billingMethodText" text="{paymentModel>method}"/>
 								<Text id="billingDateText" text="{paymentModel>date}"/>
-								<ObjectStatus 								id="billingStatusObject"									text="{paymentModel>status}"
+								<ObjectStatus 
+									id="billingStatusObject"
+									text="{paymentModel>status}"
 									state="{paymentModel>statusState}"/>
 							</cells>
 						</ColumnListItem>
