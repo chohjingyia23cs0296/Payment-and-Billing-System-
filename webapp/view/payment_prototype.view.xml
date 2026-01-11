@@ -5,22 +5,22 @@
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m"
 	displayBlock="true">
-	<Page id="page" title="Payment & Billing">
+	<Page id="paymentPrototypePage" title="Payment & Billing">
 		<content>
 			<!-- Payment Form Section -->
-			<VBox class="sapUiMediumMargin">
-				<Title text="Payment Details" level="H2"/>
+		<VBox id="paymentFormVBox" class="sapUiMediumMargin">
+			<Title id="paymentFormTitle" text="Payment Details" level="H2"/>
 				<f:SimpleForm editable="true" layout="ResponsiveGridLayout">
 					<f:content>
 						<!-- Customer Name -->
-						<Label text="Customer Name"/>
+						<Label id="customerNameLabel" text="Customer Name"/>
 						<Input 
 							id="paymentFormCustomerName"
 							placeholder="Enter customer name"
 							value="{paymentModel>/customerName}"/>
 
 						<!-- Invoice Amount -->
-						<Label text="Invoice Amount"/>
+						<Label id="invoiceAmountLabel" text="Invoice Amount"/>
 						<Input 
 							id="paymentFormAmount"
 							placeholder="Enter amount"
@@ -28,23 +28,23 @@
 							type="Number"/>
 
 						<!-- Invoice Number -->
-						<Label text="Invoice Number"/>
+						<Label id="invoiceNumberLabel" text="Invoice Number"/>
 						<Input 
 							id="paymentFormInvoiceNumber"
 							placeholder="Enter invoice number"
 							value="{paymentModel>/invoiceNumber}"/>
 
 						<!-- Payment Method -->
-						<Label text="Payment Method"/>
+						<Label id="paymentMethodLabel" text="Payment Method"/>
 						<Select 
 							id="paymentFormPaymentMethod"
 							items="{paymentModel>/paymentMethods}"
 							selectedKey="{paymentModel>/selectedMethod}">
-							<core:Item key="{paymentModel>key}" text="{paymentModel>text}"/>
+							<core:Item id="selectItem" key="{paymentModel>key}" text="{paymentModel>text}"/>
 						</Select>
 
 						<!-- Due Date -->
-						<Label text="Due Date"/>
+						<Label id="dueDateLabel" text="Due Date"/>
 						<DatePicker 
 							id="paymentFormDueDate"
 							value="{paymentModel>/dueDate}"
@@ -53,7 +53,7 @@
 				</f:SimpleForm>
 
 				<!-- Action Buttons -->
-				<HBox class="sapUiSmallMarginTop" justifyContent="Center" space="Medium">
+				<HBox id="buttonHBox" class="sapUiSmallMarginTop" justifyContent="Center">
 					<Button 
 						id="paymentFormSubmitBtn"
 						text="Submit Payment" 
@@ -67,47 +67,46 @@
 			</VBox>
 
 			<!-- Divider -->
-			<VBox class="sapUiMediumMargin">
-				<core:HTML content="&lt;hr style='margin: 20px 0;'/&gt;"/>
+			<VBox id="dividerVBox" class="sapUiMediumMargin">
+				<core:HTML id="dividerHtml" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
 			</VBox>
 
 			<!-- Billing History Section -->
-			<VBox class="sapUiMediumMargin">
-				<Title text="Recent Payments" level="H2"/>
+			<VBox id="billingHistoryVBox" class="sapUiMediumMargin">
+				<Title id="billingHistoryTitle" text="Recent Payments" level="H2"/>
 				<Table 
 					id="paymentBillingTable"
 					items="{paymentModel>/billingHistory}"
 					mode="SingleSelectMaster">
 					<columns>
-						<Column>
-							<Text text="Invoice #"/>
+						<Column id="invoiceCol">
+							<Text id="invoiceColText" text="Invoice #"/>
 						</Column>
-						<Column>
-							<Text text="Customer"/>
+						<Column id="customerCol">
+							<Text id="customerColText" text="Customer"/>
 						</Column>
-						<Column>
-							<Text text="Amount"/>
+						<Column id="amountCol">
+							<Text id="amountColText" text="Amount"/>
 						</Column>
-						<Column>
-							<Text text="Payment Method"/>
+						<Column id="methodCol">
+							<Text id="methodColText" text="Payment Method"/>
 						</Column>
-						<Column>
-							<Text text="Date"/>
+						<Column id="dateCol">
+							<Text id="dateColText" text="Date"/>
 						</Column>
-						<Column>
-							<Text text="Status"/>
+						<Column id="statusCol">
+							<Text id="statusColText" text="Status"/>
 						</Column>
 					</columns>
 					<items>
-						<ColumnListItem>
+						<ColumnListItem id="billingListItem">
 							<cells>
-								<Text text="{paymentModel>invoiceNumber}"/>
-								<Text text="{paymentModel>customerName}"/>
-								<Text text="{paymentModel>amount}"/>
-								<Text text="{paymentModel>method}"/>
-								<Text text="{paymentModel>date}"/>
-								<ObjectStatus 
-									text="{paymentModel>status}"
+								<Text id="billingInvoiceText" text="{paymentModel>invoiceNumber}"/>
+								<Text id="billingCustomerText" text="{paymentModel>customerName}"/>
+								<Text id="billingAmountText" text="{paymentModel>amount}"/>
+								<Text id="billingMethodText" text="{paymentModel>method}"/>
+								<Text id="billingDateText" text="{paymentModel>date}"/>
+								<ObjectStatus 								id="billingStatusObject"									text="{paymentModel>status}"
 									state="{paymentModel>statusState}"/>
 							</cells>
 						</ColumnListItem>
