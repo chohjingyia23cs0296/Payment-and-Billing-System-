@@ -2,6 +2,7 @@
 	controllerName="paymentprototype.controller.payment_prototype"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
 	xmlns="sap.m"
 	displayBlock="true">
 	<Page id="page" title="Payment & Billing">
@@ -14,14 +15,14 @@
 						<!-- Customer Name -->
 						<Label text="Customer Name"/>
 						<Input 
-							id="customerName"
+							id="paymentFormCustomerName"
 							placeholder="Enter customer name"
 							value="{paymentModel>/customerName}"/>
 
 						<!-- Invoice Amount -->
 						<Label text="Invoice Amount"/>
 						<Input 
-							id="invoiceAmount"
+							id="paymentFormAmount"
 							placeholder="Enter amount"
 							value="{paymentModel>/amount}"
 							type="Number"/>
@@ -29,14 +30,14 @@
 						<!-- Invoice Number -->
 						<Label text="Invoice Number"/>
 						<Input 
-							id="invoiceNumber"
+							id="paymentFormInvoiceNumber"
 							placeholder="Enter invoice number"
 							value="{paymentModel>/invoiceNumber}"/>
 
 						<!-- Payment Method -->
 						<Label text="Payment Method"/>
 						<Select 
-							id="paymentMethod"
+							id="paymentFormPaymentMethod"
 							items="{paymentModel>/paymentMethods}"
 							selectedKey="{paymentModel>/selectedMethod}">
 							<core:Item key="{paymentModel>key}" text="{paymentModel>text}"/>
@@ -45,7 +46,7 @@
 						<!-- Due Date -->
 						<Label text="Due Date"/>
 						<DatePicker 
-							id="dueDate"
+							id="paymentFormDueDate"
 							value="{paymentModel>/dueDate}"
 							displayFormat="yyyy-MM-dd"/>
 					</f:content>
@@ -54,12 +55,12 @@
 				<!-- Action Buttons -->
 				<HBox class="sapUiSmallMarginTop" justifyContent="Center" space="Medium">
 					<Button 
-						id="submitBtn"
+						id="paymentFormSubmitBtn"
 						text="Submit Payment" 
 						type="Emphasized"
 						press=".onSubmitPayment"/>
 					<Button 
-						id="resetBtn"
+						id="paymentFormResetBtn"
 						text="Clear" 
 						press=".onReset"/>
 				</HBox>
@@ -74,7 +75,7 @@
 			<VBox class="sapUiMediumMargin">
 				<Title text="Recent Payments" level="H2"/>
 				<Table 
-					id="billingTable"
+					id="paymentBillingTable"
 					items="{paymentModel>/billingHistory}"
 					mode="SingleSelectMaster">
 					<columns>
