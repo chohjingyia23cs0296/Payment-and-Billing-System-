@@ -99,7 +99,8 @@ sap.ui.define([
             const oCountsModel = new JSONModel({
                 allCount: 0,
                 overdueCount: 0,
-                pendingCount: 0
+                pendingCount: 0,
+                upcomingCount: 0
             });
             this.getView().setModel(oCountsModel);
             
@@ -117,10 +118,26 @@ sap.ui.define([
             const oBillsModel = this.getView().getModel("bills");
             const aBills = oBillsModel.getData();
             
+            // Calculate upcoming bills (due within 3 days)
+            const oCurrentDate = new Date();
+            const oThreeDaysLater = new Date();
+            oThreeDaysLater.setDate(oCurrentDate.getDate() + 3);
+            
+            let upcomingCount = 0;
+            aBills.forEach((oBill) => {
+                if (oBill.status === "Pending") {
+                    const oDueDate = new Date(oBill.dueDate);
+                    if (oDueDate >= oCurrentDate && oDueDate <= oThreeDaysLater) {
+                        upcomingCount++;
+                    }
+                }
+            });
+            
             const oCounts = {
                 allCount: aBills.length,
                 overdueCount: aBills.filter(b => b.status === "Overdue").length,
-                pendingCount: aBills.filter(b => b.status === "Pending").length
+                pendingCount: aBills.filter(b => b.status === "Pending").length,
+                upcomingCount: upcomingCount
             };
             
             this.getView().getModel().setData(oCounts);

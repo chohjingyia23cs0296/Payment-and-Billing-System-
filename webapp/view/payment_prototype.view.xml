@@ -49,15 +49,18 @@
 					<VBox id="alertsVBox" class="sapUiSmallMarginTop">
 						<MessageStrip
 							id="overdueMessageStrip"
-							text="1 payment is overdue. Please settle immediately to avoid penalties."
+							text="{/overdueCount} payment is overdue. Please settle immediately to avoid penalties."
 							type="Error"
 							showIcon="true"
-							class="sapUiTinyMarginBottom"/>
+							visible="{= ${/overdueCount} > 0 }"
+							class="sapUiTinyMarginBottom sapUiLargeText"/>
 						<MessageStrip
 							id="upcomingMessageStrip"
-							text="2 payments due within 3 days. Review your bills below."
+							text="{/upcomingCount} payment(s) due within 3 days. Review your bills below."
 							type="Warning"
-							showIcon="true"/>
+							showIcon="true"
+							visible="{= ${/upcomingCount} > 0 }"
+							class="sapUiLargeText"/>
 					</VBox>
 				</VBox>
 			</f:DynamicPageHeader>
