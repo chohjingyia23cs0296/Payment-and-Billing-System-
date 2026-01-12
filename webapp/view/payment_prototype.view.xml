@@ -1,165 +1,173 @@
 <mvc:View
 	controllerName="paymentprototype.controller.payment_prototype"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:f="sap.ui.layout.form"
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m"
 	displayBlock="true">
-	<Page id="paymentPrototypePage" title="Payment &amp; Billing Tracker">
-		<content>
-			<!-- Dashboard Section -->
-			<VBox id="dashboardVBox" class="sapUiMediumMargin">
-				<Title id="dashboardTitle" text="Payment Status Overview" level="H2"/>
-				<HBox id="statusHBox" class="sapUiMediumMargin" justifyContent="SpaceBetween">
-					<VBox id="paidVBox" class="sapUiSmallMargin">
-						<ObjectNumber id="paidNumber" number="4" emphasis="positive"/>
-						<Text id="paidLabel" text="Paid"/>
-					</VBox>
-					<VBox id="pendingVBox" class="sapUiSmallMargin">
-						<ObjectNumber id="pendingNumber" number="2" emphasis="warning"/>
-						<Text id="pendingLabel" text="Pending"/>
-					</VBox>
-					<VBox id="overdueVBox" class="sapUiSmallMargin">
-						<ObjectNumber id="overdueNumber" number="1" emphasis="negative"/>
-						<Text id="overdueLabel" text="Overdue"/>
-					</VBox>
-					<VBox id="totalVBox" class="sapUiSmallMargin">
-						<ObjectNumber id="totalNumber" number="$3,500.00" emphasis=""/>
-						<Text id="totalLabel" text="Total Due"/>
-					</VBox>
-				</HBox>
-			</VBox>
+	<Page id="paymentPrototypePage" showHeader="false">
+		<!-- Custom Header Bar -->
+		<Bar id="headerBar" class="customHeaderBar">
+			<BarLeft>
+				<Text id="welcomeText" text="Welcome, Jing Yi"/>
+			</BarLeft>
+			<BarRight>
+				<Icon id="userIcon" src="sap-icon://person-placeholder" size="1.75rem"/>
+			</BarRight>
+		</Bar>
 
-			<!-- Divider -->
-			<VBox id="dividerVBox1" class="sapUiMediumMargin">
-				<core:HTML id="dividerHtml1" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
-			</VBox>
-
-			<!-- Reminders/Alerts Section -->
-			<VBox id="remindersVBox" class="sapUiMediumMargin">
-				<Title id="remindersTitle" text="Due Payment Reminders" level="H2"/>
-				<List id="reminderList" items="{paymentModel>/reminders}">
-					<StandardListItem
-						id="reminderListItem"
-						title="{paymentModel>feeType}"
-						description="{paymentModel>dueDate}"
-						highlight="{paymentModel>status}"
-						info="{paymentModel>amount}"/>
-				</List>
-			</VBox>
-
-			<!-- Divider -->
-			<VBox id="dividerVBox2" class="sapUiMediumMargin">
-				<core:HTML id="dividerHtml2" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
-			</VBox>
-
-			<!-- Fee Records Section -->
-			<VBox id="feeRecordsVBox" class="sapUiMediumMargin">
-				<Title id="feeRecordsTitle" text="Hostel Fee Records" level="H2"/>
+		<ScrollContainer id="mainScroll" height="100%" width="100%">
+			<VBox id="mainContent" class="sapUiMediumMargin">
 				
-				<!-- Filter Bar -->
-				<HBox id="filterHBox" class="sapUiSmallMarginBottom">
-					<Select 
-						id="feeTypeSelect"
-						items="{paymentModel>/feeTypes}"
-						selectedKey="{paymentModel>/selectedFeeType}"
-						width="200px">
-						<core:Item id="feeTypeItem" key="{paymentModel>key}" text="{paymentModel>text}"/>
-					</Select>
-					<Select 
-						id="paymentStatusSelect"
-						items="{paymentModel>/statuses}"
-						selectedKey="{paymentModel>/selectedStatus}"
-						width="200px"
-						class="sapUiSmallMarginStart">
-						<core:Item id="statusItem" key="{paymentModel>key}" text="{paymentModel>text}"/>
-					</Select>
+				<!-- Outstanding Balance Hero Card -->
+				<VBox id="heroVBox" class="heroCard">
+					<Text id="balanceLabel" class="outstandingLabel" text="Total Outstanding"/>
+					<Text id="balanceAmount" class="outstandingAmount" text="RM 550.00"/>
+					<Button id="payAllBtn" class="payAllButton" text="Pay All" press=".onPayAll" type="Emphasized"/>
+				</VBox>
+
+				<!-- Status Stats -->
+				<VBox id="statsVBox" class="statsContainer">
+					<VBox id="paidStatBox" class="statCard">
+						<Text id="paidStatNumber" class="statNumber" text="4"/>
+						<Text id="paidStatLabel" class="statLabel" text="Paid"/>
+					</VBox>
+					<VBox id="pendingStatBox" class="statCard">
+						<Text id="pendingStatNumber" class="statNumber" text="2"/>
+						<Text id="pendingStatLabel" class="statLabel" text="Pending"/>
+					</VBox>
+					<VBox id="overdueStatBox" class="statCard">
+						<Text id="overdueStatNumber" class="statNumber" text="1"/>
+						<Text id="overdueStatLabel" class="statLabel" text="Overdue"/>
+					</VBox>
+				</VBox>
+
+				<!-- Due Payment Reminders -->
+				<Title id="remindersTitle" class="sectionTitle" text="Due Payment Reminders" level="H3"/>
+				<VBox id="remindersContainer">
+					<VBox id="reminder1" class="reminderItem warning">
+						<VBox>
+							<Text id="reminder1Title" class="reminderTitle" text="Monthly Fee (February)"/>
+							<Text id="reminder1Date" class="reminderDate" text="Due: 2026-02-01"/>
+						</VBox>
+						<Text id="reminder1Amount" class="reminderAmount" text="RM 300.00"/>
+					</VBox>
+					<VBox id="reminder2" class="reminderItem info">
+						<VBox>
+							<Text id="reminder2Title" class="reminderTitle" text="Utilities"/>
+							<Text id="reminder2Date" class="reminderDate" text="Due: 2026-02-10"/>
+						</VBox>
+						<Text id="reminder2Amount" class="reminderAmount" text="RM 200.00"/>
+					</VBox>
+					<VBox id="reminder3" class="reminderItem error">
+						<VBox>
+							<Text id="reminder3Title" class="reminderTitle" text="Monthly Fee (January) - OVERDUE"/>
+							<Text id="reminder3Date" class="reminderDate" text="Was Due: 2026-01-05"/>
+						</VBox>
+						<Text id="reminder3Amount" class="reminderAmount" text="RM 300.00"/>
+					</VBox>
+				</VBox>
+
+				<!-- Hostel Fee Records -->
+				<Title id="feeRecordsTitle" class="sectionTitle" text="Hostel Fee Records" level="H3"/>
+				
+				<!-- Fee Cards -->
+				<VBox id="feeCardsContainer">
+					<!-- Fee Card 1: Deposit (Paid) -->
+					<VBox id="feeCard1" class="billCardContainer">
+						<Icon id="depositIcon" src="sap-icon://money-bills" class="billIconContainer type-deposit" size="2rem"/>
+						<VBox id="feeDetails1" class="billDetailsContainer">
+							<Text id="feeTitle1" class="billTitle" text="Deposit"/>
+							<Text id="feeDueDate1" class="billDueDate" text="Due: 2025-12-15"/>
+						</VBox>
+						<VBox id="feeAmount1" class="billAmountStatus">
+							<Text id="feeAmount1Text" class="billAmount" text="RM 500.00"/>
+							<Text id="feeStatus1" class="billStatus status-paid" text="Paid"/>
+						</VBox>
+						<Button id="feeAction1" class="billActionButton" text="Receipt" press=".onGenerateReceipt"/>
+					</VBox>
+
+					<!-- Fee Card 2: Semester Fee (Paid) -->
+					<VBox id="feeCard2" class="billCardContainer">
+						<Icon id="semesterIcon" src="sap-icon://study-leave" class="billIconContainer type-semester" size="2rem"/>
+						<VBox id="feeDetails2" class="billDetailsContainer">
+							<Text id="feeTitle2" class="billTitle" text="Semester Fee 2025/2026"/>
+							<Text id="feeDueDate2" class="billDueDate" text="Due: 2026-01-15"/>
+						</VBox>
+						<VBox id="feeAmount2" class="billAmountStatus">
+							<Text id="feeAmount2Text" class="billAmount" text="RM 1,200.00"/>
+							<Text id="feeStatus2" class="billStatus status-paid" text="Paid"/>
+						</VBox>
+						<Button id="feeAction2" class="billActionButton" text="Receipt" press=".onGenerateReceipt"/>
+					</VBox>
+
+					<!-- Fee Card 3: Monthly Fee (Pending) -->
+					<VBox id="feeCard3" class="billCardContainer">
+						<Icon id="monthlyIcon" src="sap-icon://calendar" class="billIconContainer type-monthly" size="2rem"/>
+						<VBox id="feeDetails3" class="billDetailsContainer">
+							<Text id="feeTitle3" class="billTitle" text="Monthly Fee - February"/>
+							<Text id="feeDueDate3" class="billDueDate" text="Due: 2026-02-01"/>
+						</VBox>
+						<VBox id="feeAmount3" class="billAmountStatus">
+							<Text id="feeAmount3Text" class="billAmount" text="RM 300.00"/>
+							<Text id="feeStatus3" class="billStatus status-pending" text="Pending"/>
+						</VBox>
+						<Button id="feeAction3" class="billActionButton" text="Pay" type="Emphasized" press=".onPayFee"/>
+					</VBox>
+
+					<!-- Fee Card 4: Monthly Fee (Overdue) -->
+					<VBox id="feeCard4" class="billCardContainer">
+						<Icon id="overdueIcon" src="sap-icon://alert" class="billIconContainer type-utilities" size="2rem"/>
+						<VBox id="feeDetails4" class="billDetailsContainer">
+							<Text id="feeTitle4" class="billTitle" text="Monthly Fee - January (OVERDUE)"/>
+							<Text id="feeDueDate4" class="billDueDate" text="Was Due: 2026-01-05"/>
+						</VBox>
+						<VBox id="feeAmount4" class="billAmountStatus">
+							<Text id="feeAmount4Text" class="billAmount" text="RM 300.00"/>
+							<Text id="feeStatus4" class="billStatus status-overdue" text="Overdue"/>
+						</VBox>
+						<Button id="feeAction4" class="billActionButton" text="Pay Now" type="Emphasized" press=".onPayFee"/>
+					</VBox>
+
+					<!-- Fee Card 5: Utilities (Pending) -->
+					<VBox id="feeCard5" class="billCardContainer">
+						<Icon id="utilitiesIcon" src="sap-icon://lightbulb" class="billIconContainer type-utilities" size="2rem"/>
+						<VBox id="feeDetails5" class="billDetailsContainer">
+							<Text id="feeTitle5" class="billTitle" text="Utilities"/>
+							<Text id="feeDueDate5" class="billDueDate" text="Due: 2026-02-10"/>
+						</VBox>
+						<VBox id="feeAmount5" class="billAmountStatus">
+							<Text id="feeAmount5Text" class="billAmount" text="RM 200.00"/>
+							<Text id="feeStatus5" class="billStatus status-pending" text="Pending"/>
+						</VBox>
+						<Button id="feeAction5" class="billActionButton" text="Pay" type="Emphasized" press=".onPayFee"/>
+					</VBox>
+
+					<!-- Fee Card 6: Semester Fee (Pending) -->
+					<VBox id="feeCard6" class="billCardContainer">
+						<Icon id="semesterIcon2" src="sap-icon://study-leave" class="billIconContainer type-semester" size="2rem"/>
+						<VBox id="feeDetails6" class="billDetailsContainer">
+							<Text id="feeTitle6" class="billTitle" text="Semester Fee 2026/2027"/>
+							<Text id="feeDueDate6" class="billDueDate" text="Due: 2026-07-15"/>
+						</VBox>
+						<VBox id="feeAmount6" class="billAmountStatus">
+							<Text id="feeAmount6Text" class="billAmount" text="RM 1,200.00"/>
+							<Text id="feeStatus6" class="billStatus status-pending" text="Pending"/>
+						</VBox>
+						<Button id="feeAction6" class="billActionButton" text="Pay" type="Emphasized" press=".onPayFee"/>
+					</VBox>
+				</VBox>
+
+				<!-- Payment Methods -->
+				<Title id="paymentMethodsTitle" class="sectionTitle" text="Payment Methods" level="H3"/>
+				<HBox id="paymentButtonsBox" justifyContent="Center" space="Medium" class="sapUiMediumMargin">
+					<Button id="bankTransferBtn" text="Bank Transfer" icon="sap-icon://money-bills" press=".onBankTransfer" type="Emphasized"/>
+					<Button id="eWalletBtn" text="E-Wallet" icon="sap-icon://wallet" press=".onEWallet" type="Emphasized"/>
+					<Button id="creditCardBtn" text="Credit Card" icon="sap-icon://payment-cards" press=".onCreditCard" type="Emphasized"/>
 				</HBox>
 
-				<!-- Fee Table -->
-				<Table 
-					id="feeTable"
-					items="{paymentModel>/feeRecords}"
-					mode="SingleSelectMaster">
-					<columns>
-						<Column id="feeTypeCol" width="15%">
-							<Text id="feeTypeColText" text="Fee Type"/>
-						</Column>
-						<Column id="amountCol" width="15%">
-							<Text id="amountColText" text="Amount"/>
-						</Column>
-						<Column id="dueDateCol" width="15%">
-							<Text id="dueDateColText" text="Due Date"/>
-						</Column>
-						<Column id="paidDateCol" width="15%">
-							<Text id="paidDateColText" text="Paid Date"/>
-						</Column>
-						<Column id="statusCol" width="15%">
-							<Text id="statusColText" text="Status"/>
-						</Column>
-						<Column id="actionCol" width="25%">
-							<Text id="actionColText" text="Actions"/>
-						</Column>
-					</columns>
-					<items>
-						<ColumnListItem id="feeListItem">
-							<cells>
-								<Text id="feeTypeText" text="{paymentModel>feeType}"/>
-								<Text id="feeAmountText" text="{paymentModel>amount}"/>
-								<Text id="feeDueDateText" text="{paymentModel>dueDate}"/>
-								<Text id="feePaidDateText" text="{paymentModel>paidDate}"/>
-								<ObjectStatus 
-									id="feeStatusObject"
-									text="{paymentModel>status}"
-									state="{paymentModel>statusState}"/>
-								<HBox id="actionHBox">
-									<Button 
-										id="payBtn"
-										text="Pay" 
-										type="Emphasized"
-										press=".onPayFee"
-										enabled="{paymentModel>enablePay}"
-										width="70px"/>
-									<Button 
-										id="receiptBtn"
-										text="Receipt" 
-										press=".onGenerateReceipt"
-										enabled="{paymentModel>enableReceipt}"
-										class="sapUiSmallMarginStart"
-										width="70px"/>
-								</HBox>
-							</cells>
-						</ColumnListItem>
-					</items>
-				</Table>
+				<!-- Spacing -->
+				<VBox class="sapUiMediumMargin"/>
 			</VBox>
-
-			<!-- Divider -->
-			<VBox id="dividerVBox3" class="sapUiMediumMargin">
-				<core:HTML id="dividerHtml3" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
-			</VBox>
-
-			<!-- Payment Gateway Section -->
-			<VBox id="gatewayVBox" class="sapUiMediumMargin">
-				<Title id="gatewayTitle" text="Payment Methods" level="H2"/>
-				<HBox id="paymentMethodBox" class="sapUiMediumMargin" justifyContent="Center" space="Medium">
-					<Button 
-						id="bankTransferBtn"
-						text="Bank Transfer" 
-						icon="sap-icon://money-bills"
-						press=".onBankTransfer"/>
-					<Button 
-						id="eWalletBtn"
-						text="E-Wallet" 
-						icon="sap-icon://wallet"
-						press=".onEWallet"/>
-					<Button 
-						id="creditCardBtn"
-						text="Credit Card" 
-						icon="sap-icon://payment-cards"
-						press=".onCreditCard"/>
-				</HBox>
-			</VBox>
-		</content>
+		</ScrollContainer>
 	</Page>
 </mvc:View>

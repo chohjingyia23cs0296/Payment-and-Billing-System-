@@ -1,1 +1,524 @@
-/* Enter your custom styles here */
+/* ============================================
+   HOSTEL PAYMENT TRACKER - MODERN FINTECH STYLE
+   ============================================ */
+
+/* Global Styles */
+:root {
+	--primary-blue: #1e40af;
+	--primary-purple: #7c3aed;
+	--success-green: #10b981;
+	--warning-orange: #f59e0b;
+	--danger-red: #ef4444;
+	--light-bg: #f5f7fa;
+	--card-bg: #ffffff;
+	--text-primary: #1f2937;
+	--text-secondary: #6b7280;
+	--border-color: #e5e7eb;
+}
+
+/* Remove default page background */
+.sapMPage {
+	background-color: var(--light-bg) !important;
+}
+
+/* ============================================
+   HEADER BAR STYLING
+   ============================================ */
+.customHeaderBar {
+	background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%) !important;
+	color: white !important;
+	padding: 16px 24px !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.customHeaderBar .sapMText {
+	color: white !important;
+	font-weight: 600;
+	font-size: 18px;
+	margin: 0 !important;
+}
+
+.sapMBar.customHeaderBar .sapMBarLeft {
+	flex: 1;
+}
+
+.sapMBar.customHeaderBar .sapMBarRight {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.userAvatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.userAvatar:hover {
+	background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   HERO CARD - Outstanding Balance
+   ============================================ */
+.heroCard {
+	background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+	border-radius: 12px;
+	padding: 32px 24px;
+	color: white;
+	margin: 24px;
+	box-shadow: 0 10px 30px rgba(30, 64, 175, 0.2);
+	text-align: left;
+}
+
+.heroCard .outstandingLabel {
+	font-size: 14px;
+	opacity: 0.8;
+	font-weight: 500;
+	margin-bottom: 8px;
+	display: block;
+}
+
+.heroCard .outstandingAmount {
+	font-size: 48px;
+	font-weight: 700;
+	line-height: 1;
+	margin-bottom: 24px;
+	display: block;
+}
+
+.heroCard .payAllButton {
+	background: rgba(255, 255, 255, 0.2) !important;
+	color: white !important;
+	border: 2px solid rgba(255, 255, 255, 0.4) !important;
+	border-radius: 6px;
+	padding: 10px 20px !important;
+	font-weight: 600;
+	transition: all 0.3s ease;
+}
+
+.heroCard .payAllButton:hover {
+	background: rgba(255, 255, 255, 0.3) !important;
+	border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* ============================================
+   SECTION TITLE STYLING
+   ============================================ */
+.sectionTitle {
+	font-size: 18px !important;
+	font-weight: 600 !important;
+	color: var(--text-primary) !important;
+	margin: 24px 24px 16px 24px !important;
+	padding: 0 !important;
+}
+
+/* ============================================
+   CUSTOM LIST ITEM CARD STYLING
+   ============================================ */
+.billCardContainer {
+	background: var(--card-bg);
+	border-radius: 8px;
+	padding: 16px;
+	margin-bottom: 12px;
+	margin-left: 24px;
+	margin-right: 24px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	border: 1px solid var(--border-color);
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	transition: all 0.3s ease;
+}
+
+.billCardContainer:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+	border-color: var(--primary-blue);
+}
+
+.billIconContainer {
+	width: 48px;
+	height: 48px;
+	border-radius: 8px;
+	background: var(--light-bg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.billIconContainer.type-deposit {
+	background: rgba(16, 185, 129, 0.1);
+	color: var(--success-green);
+}
+
+.billIconContainer.type-semester {
+	background: rgba(30, 64, 175, 0.1);
+	color: var(--primary-blue);
+}
+
+.billIconContainer.type-monthly {
+	background: rgba(124, 58, 237, 0.1);
+	color: var(--primary-purple);
+}
+
+.billIconContainer.type-utilities {
+	background: rgba(245, 158, 11, 0.1);
+	color: var(--warning-orange);
+}
+
+.billDetailsContainer {
+	flex: 1;
+	min-width: 0;
+}
+
+.billTitle {
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	color: var(--text-primary) !important;
+	margin-bottom: 4px !important;
+}
+
+.billDueDate {
+	font-size: 13px !important;
+	color: var(--text-secondary) !important;
+	margin: 0 !important;
+}
+
+.billAmountStatus {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+}
+
+.billAmount {
+	font-size: 16px !important;
+	font-weight: 700 !important;
+	color: var(--text-primary) !important;
+	margin: 0 !important;
+}
+
+.billStatus {
+	padding: 4px 8px !important;
+	border-radius: 4px;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+}
+
+.billStatus.status-paid {
+	background: rgba(16, 185, 129, 0.1);
+	color: var(--success-green) !important;
+}
+
+.billStatus.status-pending {
+	background: rgba(245, 158, 11, 0.1);
+	color: var(--warning-orange) !important;
+}
+
+.billStatus.status-overdue {
+	background: rgba(239, 68, 68, 0.1);
+	color: var(--danger-red) !important;
+}
+
+.billActionButton {
+	width: 70px !important;
+	height: 36px !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	border-radius: 6px !important;
+	flex-shrink: 0;
+}
+
+/* ============================================
+   STATUS & STATS BAR
+   ============================================ */
+.statsContainer {
+	display: flex;
+	gap: 12px;
+	margin: 0 24px;
+	flex-wrap: wrap;
+}
+
+.statCard {
+	flex: 1;
+	min-width: 100px;
+	background: var(--card-bg);
+	padding: 16px;
+	border-radius: 8px;
+	text-align: center;
+	border: 1px solid var(--border-color);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.statNumber {
+	font-size: 28px !important;
+	font-weight: 700 !important;
+	color: var(--primary-blue) !important;
+	margin: 0 !important;
+	display: block;
+}
+
+.statLabel {
+	font-size: 12px !important;
+	color: var(--text-secondary) !important;
+	margin-top: 8px !important;
+	font-weight: 500;
+}
+
+/* ============================================
+   PAYMENT GATEWAY FORM
+   ============================================ */
+.paymentFormContainer {
+	max-width: 500px;
+	margin: 40px auto;
+	padding: 0 24px;
+}
+
+.secureConnectionBadge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	color: var(--success-green);
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 24px;
+	padding: 12px;
+	background: rgba(16, 185, 129, 0.05);
+	border-radius: 6px;
+	border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.bankLogoPlaceholder {
+	text-align: center;
+	margin-bottom: 32px;
+}
+
+.bankLogoPlaceholder .sapMImage {
+	width: 80px !important;
+	height: 80px !important;
+	background: var(--light-bg);
+	border-radius: 8px;
+}
+
+.formInput {
+	margin-bottom: 16px !important;
+}
+
+.formInput .sapMInputBase {
+	border-radius: 6px !important;
+	border: 1px solid var(--border-color) !important;
+}
+
+.formInput .sapMInputBase:focus {
+	border-color: var(--primary-blue) !important;
+	box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1) !important;
+}
+
+/* ============================================
+   SUCCESS PAGE
+   ============================================ */
+.successContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40px 24px;
+	text-align: center;
+}
+
+.successIcon {
+	width: 80px !important;
+	height: 80px !important;
+	margin-bottom: 24px !important;
+	color: var(--success-green) !important;
+}
+
+.successMessage {
+	font-size: 24px !important;
+	font-weight: 700 !important;
+	color: var(--text-primary) !important;
+	margin-bottom: 8px !important;
+}
+
+.receiptCard {
+	width: 100%;
+	max-width: 400px;
+	background: var(--card-bg);
+	border: 1px dashed var(--border-color);
+	border-bottom: 2px dashed var(--border-color);
+	border-radius: 8px 8px 0 0;
+	padding: 24px;
+	margin: 24px auto;
+	font-family: 'Courier New', monospace;
+	line-height: 1.8;
+	text-align: center;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.receiptHeader {
+	font-size: 14px;
+	font-weight: 700;
+	margin-bottom: 16px;
+	border-bottom: 1px solid var(--border-color);
+	padding-bottom: 12px;
+	color: var(--text-primary);
+}
+
+.receiptLine {
+	display: flex;
+	justify-content: space-between;
+	font-size: 13px;
+	color: var(--text-secondary);
+	margin: 8px 0;
+}
+
+.receiptLineLabel {
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.receiptLineValue {
+	color: var(--text-primary);
+}
+
+.receiptDivider {
+	border-top: 1px dashed var(--border-color);
+	margin: 12px 0;
+}
+
+.receiptTotal {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--primary-blue);
+	margin: 12px 0;
+}
+
+/* ============================================
+   REMINDER LIST
+   ============================================ */
+.reminderItem {
+	background: var(--card-bg);
+	border-left: 4px solid;
+	border-radius: 4px;
+	padding: 12px 16px;
+	margin-bottom: 12px;
+	margin-left: 24px;
+	margin-right: 24px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.reminderItem.warning {
+	border-left-color: var(--warning-orange);
+	background: rgba(245, 158, 11, 0.02);
+}
+
+.reminderItem.error {
+	border-left-color: var(--danger-red);
+	background: rgba(239, 68, 68, 0.02);
+}
+
+.reminderItem.info {
+	border-left-color: var(--primary-blue);
+	background: rgba(30, 64, 175, 0.02);
+}
+
+.reminderTitle {
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.reminderAmount {
+	font-weight: 700;
+	color: var(--primary-blue);
+}
+
+/* ============================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ============================================ */
+.sapMBtn {
+	border-radius: 6px !important;
+	font-weight: 600 !important;
+	transition: all 0.3s ease !important;
+}
+
+.sapMBtn.sapMBtnEmphasized {
+	background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%) !important;
+	border: none !important;
+}
+
+.sapMBtn.sapMBtnEmphasized:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 16px rgba(30, 64, 175, 0.3) !important;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 600px) {
+	.statsContainer {
+		flex-direction: column;
+	}
+
+	.billCardContainer {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.billAmountStatus {
+		align-items: flex-start;
+		width: 100%;
+	}
+
+	.heroCard {
+		margin: 16px;
+		padding: 24px 16px;
+	}
+
+	.heroCard .outstandingAmount {
+		font-size: 36px;
+	}
+
+	.paymentFormContainer {
+		max-width: 100%;
+	}
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes slideInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.billCardContainer {
+	animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes pulse {
+	0%, 100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+.successIcon {
+	animation: pulse 0.6s ease-in-out;
+}
