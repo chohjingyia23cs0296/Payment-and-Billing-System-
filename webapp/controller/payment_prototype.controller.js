@@ -95,37 +95,59 @@ sap.ui.define([
 
             this.getView().setModel(oBillsModel, "bills");
             
-            // Initialize counts model for tab badges
+            // Initialize counts model for tab badges and total outstanding
             const oCountsModel = new JSONModel({
                 allCount: 0,
                 overdueCount: 0,
                 pendingCount: 0,
-                upcomingCount: 0
+                upcomingCount: 0,
+                totalOutstanding: "0.00"
             });
             this.getView().setModel(oCountsModel);
             
-            // Calculate initial counts
-            this.updateTabCounts();
+            // Calculate initial stats
+            this._recalculateStats();
             
             // Check for due date reminders on init
             this.checkPaymentReminders();
         },
 
         /**
-         * Update tab counts based on bill statuses
+         * Recalculate all dashboard statistics
+         * Counts bills by status and calculates total outstanding amount
          */
-        updateTabCounts() {
+        _recalculateStats() {
             const oBillsModel = this.getView().getModel("bills");
             const aBills = oBillsModel.getData();
             
-            // Calculate upcoming bills (due within 3 days)
+            // Count bills by status
+            let allCount = aBills.length;
+            let paidCount = 0;
+            let overdueCount = 0;
+            let pendingCount = 0;
+            let upcomingCount = 0;
+            let totalOutstanding = 0;
+            
             const oCurrentDate = new Date();
             const oThreeDaysLater = new Date();
             oThreeDaysLater.setDate(oCurrentDate.getDate() + 3);
             
-            let upcomingCount = 0;
             aBills.forEach((oBill) => {
-                if (oBill.status === "Pending") {
+                const status = oBill.status;
+                
+                // Count by status
+                if (status === "Paid") {
+                    paidCount++;
+                } else if (status === "Overdue") {
+                    overdueCount++;
+                    // Add to total outstanding
+                    totalOutstanding += parseFloat(oBill.amount);
+                } else if (status === "Pending") {
+                    pendingCount++;
+                    // Add to total outstanding
+                    totalOutstanding += parseFloat(oBill.amount);
+                    
+                    // Check if upcoming (due within 3 days)
                     const oDueDate = new Date(oBill.dueDate);
                     if (oDueDate >= oCurrentDate && oDueDate <= oThreeDaysLater) {
                         upcomingCount++;
@@ -133,14 +155,24 @@ sap.ui.define([
                 }
             });
             
-            const oCounts = {
-                allCount: aBills.length,
-                overdueCount: aBills.filter(b => b.status === "Overdue").length,
-                pendingCount: aBills.filter(b => b.status === "Pending").length,
-                upcomingCount: upcomingCount
-            };
-            
-            this.getView().getModel().setData(oCounts);
+            // Update the counts model
+            const oCountsModel = this.getView().getModel();
+            oCountsModel.setData({
+                allCount: allCount,
+                paidCount: paidCount,
+                overdueCount: overdueCount,
+                pendingCount: pendingCount,
+                upcomingCount: upcomingCount,
+                totalOutstanding: totalOutstanding.toFixed(2)
+            });
+        },
+
+        /**
+         * Update tab counts based on bill statuses
+         * @deprecated Use _recalculateStats instead
+         */
+        updateTabCounts() {
+            this._recalculateStats();
         },
 
         /**
@@ -341,8 +373,8 @@ sap.ui.define([
             // Get the updated bill object for display
             const oBill = oContext.getObject();
             
-            // Update tab counts after payment
-            this.updateTabCounts();
+            // Recalculate all statistics after payment
+            this._recalculateStats();
             
             MessageBox.success(
                 `Payment successful!\n\nReceipt ID: ${oBill.receiptId}\nAmount: ${oBill.currency} ${oBill.amount}`,
@@ -426,7 +458,7 @@ Thank you for your payment!
         onRefresh() {
             const oBillsModel = this.getView().getModel("bills");
             oBillsModel.refresh(true);
-            this.updateTabCounts();
+            this._recalculateStats();
             MessageToast.show("Data refreshed");
             this.checkPaymentReminders();
         }

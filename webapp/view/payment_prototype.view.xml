@@ -11,13 +11,22 @@
 		<f:title>
 			<f:DynamicPageTitle id="dynamicPageTitle">
 				<f:heading>
-					<Title id="pageTitle" text="Hostel Payment System"/>
+					<VBox id="titleVBox">
+						<Title id="pageTitle" text="Total Outstanding" level="H2"/>
+						<ObjectNumber
+							id="totalOutstandingNumber"
+							number="{/totalOutstanding}"
+							unit="RM"
+							emphasized="true"
+							state="Warning"
+							class="sapUiTinyMarginTop"/>
+					</VBox>
 				</f:heading>
 				<f:snappedContent>
-					<Text id="snappedBalance" text="Outstanding: RM 3,500.00"/>
+					<Text id="snappedBalance" text="Outstanding: RM {/totalOutstanding}"/>
 				</f:snappedContent>
 				<f:expandedContent>
-					<Text id="expandedWelcome" text="Welcome, Student"/>
+					<Text id="expandedWelcome" text="Hostel Payment System"/>
 				</f:expandedContent>
 				<f:actions>
 					<Button id="refreshBtn" icon="sap-icon://refresh" press=".onRefresh"/>
@@ -30,23 +39,35 @@
 		<f:header>
 			<f:DynamicPageHeader id="dynamicPageHeader" pinnable="true">
 				<VBox id="headerContentVBox">
-					<!-- Outstanding Balance Card -->
-					<VBox id="outstandingCardVBox" class="outstandingCard">
-						<ObjectHeader
-							id="balanceHeader"
-							title="RM 3,500.00"
-							intro="Total Outstanding"
-							class="balanceObjectHeader">
-							<statuses>
-								<ObjectStatus id="paidStatus" text="4 Paid" state="Success"/>
-								<ObjectStatus id="pendingStatus" text="2 Pending" state="Warning"/>
-								<ObjectStatus id="overdueStatus" text="1 Overdue" state="Error"/>
-							</statuses>
-						</ObjectHeader>
-					</VBox>
+					<!-- Icon Tab Bar for Filtering -->
+					<IconTabBar
+						id="billsTabBar"
+						select=".onTabSelect"
+						class="sapUiSmallMarginBottom">
+						<items>
+							<IconTabFilter
+								id="allTab"
+								key="All"
+								text="All"
+								count="{/allCount}"/>
+							<IconTabSeparator id="tabSeparator1"/>
+							<IconTabFilter
+								id="overdueTab"
+								key="Overdue"
+								text="Overdue"
+								count="{/overdueCount}"
+								iconColor="Negative"/>
+							<IconTabFilter
+								id="pendingTab"
+								key="Pending"
+								text="Pending"
+								count="{/pendingCount}"
+								iconColor="Critical"/>
+						</items>
+					</IconTabBar>
 
 					<!-- Payment Alerts -->
-					<VBox id="alertsVBox" class="sapUiSmallMarginTop">
+					<VBox id="alertsVBox">
 						<MessageStrip
 							id="overdueMessageStrip"
 							text="{/overdueCount} payment is overdue. Please settle immediately to avoid penalties."
@@ -164,7 +185,6 @@
 						</items>
 					</Table>
 				</Panel>
-			</VBox>
 		</f:content>
 	</f:DynamicPage>
 </mvc:View>
