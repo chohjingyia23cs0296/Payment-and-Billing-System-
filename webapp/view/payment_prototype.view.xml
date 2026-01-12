@@ -14,24 +14,27 @@
 				width="auto" 
 				class="sapUiResponsiveMargin sapUiSmallMarginBottom">
 				<content>
-					<VBox class="sapUiSmallMargin">
+					<VBox id="welcomeVBox" class="sapUiSmallMargin">
 						<!-- Heading with Avatar -->
-						<HBox alignItems="Center" class="sapUiTinyMarginBottom">
+						<HBox id="welcomeHeadingHBox" alignItems="Center" class="sapUiTinyMarginBottom">
 							<Avatar 
+								id="userAvatar"
 								src="sap-icon://employee" 
 								displaySize="XS" 
 								class="sapUiTinyMarginEnd"/>
 							<Title 
+								id="welcomeTitle"
 								text="Welcome, Choh Jing Yi" 
 								level="H3"/>
 						</HBox>
 						
 						<!-- Expanded Content -->
-						<HBox alignItems="Center">
+						<HBox id="studentInfoHBox" alignItems="Center">
 							<Label 
+								id="studentIdLabel"
 								text="Student ID: A23CS0296" 
 								class="sapUiTinyMarginEnd"/>
-							<Label text="Bachelor of Computer Science"/>
+							<Label id="studentProgLabel" text="Bachelor of Computer Science"/>
 						</HBox>
 					</VBox>
 				</content>

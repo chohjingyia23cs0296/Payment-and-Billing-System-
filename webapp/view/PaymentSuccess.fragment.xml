@@ -7,9 +7,10 @@
         contentWidth="400px"
         class="sapUiSmallMargin">
         <content>
-            <VBox alignItems="Center" justifyContent="Center" class="sapUiMediumMargin">
+            <VBox id="successContentVBox" alignItems="Center" justifyContent="Center" class="sapUiMediumMargin">
                 <!-- Success Icon with Confetti Animation -->
                 <core:Icon
+                    id="successCheckIcon"
                     src="sap-icon://sys-enter-2"
                     size="5rem"
                     color="#2e7d32"
@@ -17,12 +18,14 @@
                 
                 <!-- Title -->
                 <Title
+                    id="successTitle"
                     text="Payment Successful!"
                     titleStyle="H2"
                     class="sapUiSmallMarginBottom"/>
                 
                 <!-- Amount Display -->
                 <ObjectNumber
+                    id="successAmountNumber"
                     number="{successData>/amount}"
                     unit="{successData>/currency}"
                     emphasized="true"
@@ -31,11 +34,13 @@
                     style="font-size: 2.5rem;"/>
                 
                 <!-- Transaction Details -->
-                <VBox alignItems="Center" class="sapUiSmallMarginBottom">
+                <VBox id="transactionDetailsVBox" alignItems="Center" class="sapUiSmallMarginBottom">
                     <Text
+                        id="transactionIdText"
                         text="Transaction ID: {successData>/receiptId}"
                         class="sapUiTinyMarginBottom"/>
                     <Text
+                        id="transactionDateText"
                         text="Date: {successData>/paidDate}"
                         class="sapUiTinyMarginBottom"/>
                 </VBox>
@@ -43,11 +48,13 @@
         </content>
         <buttons>
             <Button
+                id="downloadReceiptBtn"
                 text="Download Receipt"
                 icon="sap-icon://download"
                 type="Emphasized"
                 press="onDownloadAfterSuccess"/>
             <Button
+                id="doneBtn"
                 text="Done"
                 type="Transparent"
                 press="onCloseSuccessDialog"/>

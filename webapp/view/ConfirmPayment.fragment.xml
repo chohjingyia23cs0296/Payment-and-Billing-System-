@@ -7,24 +7,28 @@
         contentWidth="400px"
         class="sapUiSmallMargin">
         <content>
-            <VBox class="sapUiSmallMargin" alignItems="Center">
+            <VBox id="confirmPaymentVBox" class="sapUiSmallMargin" alignItems="Center">
                 <!-- Fee Description Header -->
-                <VBox alignItems="Center" class="sapUiMediumMarginBottom">
+                <VBox id="feeHeaderVBox" alignItems="Center" class="sapUiMediumMarginBottom">
                     <Label 
+                        id="paymentForLabel"
                         text="Payment For" 
                         design="Bold" 
                         class="sapUiTinyMarginBottom"/>
                     <Title 
+                        id="feeTypeTitle"
                         text="{confirmData>/feeType}" 
                         titleStyle="H3" 
                         class="sapUiSmallMarginBottom"/>
                     <Text 
+                        id="feeDescriptionText"
                         text="{confirmData>/description}" 
                         class="sapUiTinyMarginBottom"/>
                 </VBox>
 
                 <!-- The Big Amount -->
                 <ObjectNumber
+                    id="confirmAmountNumber"
                     number="{confirmData>/amount}"
                     unit="{confirmData>/currency}"
                     emphasized="true"
@@ -33,17 +37,19 @@
                     style="font-size: 3rem; font-weight: 700;"/>
 
                 <!-- Due Date Info -->
-                <HBox class="sapUiSmallMarginBottom">
-                    <Label text="Due Date: " class="sapUiTinyMarginEnd"/>
-                    <Text text="{confirmData>/dueDate}"/>
+                <HBox id="dueDateHBox" class="sapUiSmallMarginBottom">
+                    <Label id="dueDateLabelText" text="Due Date: " class="sapUiTinyMarginEnd"/>
+                    <Text id="dueDateValueText" text="{confirmData>/dueDate}"/>
                 </HBox>
 
                 <!-- Payment Method -->
                 <List 
+                    id="paymentMethodList"
                     showSeparators="None" 
                     width="100%" 
                     class="sapUiSmallMarginBottom">
                     <StandardListItem
+                        id="paymentMethodItem"
                         title="Payment Method"
                         description="{confirmData>/paymentMethod}"
                         icon="{confirmData>/paymentMethodIcon}"
@@ -52,6 +58,7 @@
 
                 <!-- Information Message -->
                 <MessageStrip
+                    id="confirmPaymentInfoStrip"
                     text="Processing this payment will deduct funds immediately."
                     type="Information"
                     showIcon="true"
@@ -60,11 +67,13 @@
         </content>
         <buttons>
             <Button
+                id="confirmPaymentBtn"
                 text="Confirm &amp; Pay"
                 type="Emphasized"
                 icon="sap-icon://accept"
                 press="onConfirmPaymentAction"/>
             <Button
+                id="cancelConfirmBtn"
                 text="Cancel"
                 type="Transparent"
                 press="onCloseConfirmDialog"/>
