@@ -148,6 +148,119 @@ sap.ui.define([
         },
 
         /**
+         * Handle table selection change to update Pay Selected button
+         * @param {object} oEvent - Selection change event
+         */
+        onSelectionChange(oEvent) {
+            const oTable = oEvent.getSource();
+            const aSelectedItems = oTable.getSelectedItems();
+            const oPayButton = this.byId("paySelectedBtn");
+            
+            // Filter only unpaid bills (Pending or Overdue)
+            const aUnpaidSelected = aSelectedItems.filter(item => {
+                const oBill = item.getBindingContext("bills").getObject();
+                return oBill.status !== "Paid";
+            });
+            
+            if (aUnpaidSelected.length === 0) {
+                oPayButton.setText("Pay Selected (RM0.00)");
+                oPayButton.setEnabled(false);
+            } else {
+                // Calculate total amount
+                let fTotal = 0;
+                aUnpaidSelected.forEach(item => {
+                    const oBill = item.getBindingContext("bills").getObject();
+                    fTotal += parseFloat(oBill.amount);
+                });
+                
+                oPayButton.setText(`Pay Selected (RM${fTotal.toFixed(2)})`);
+                oPayButton.setEnabled(true);
+            }
+        },
+
+        /**
+         * Handle bulk payment for selected bills
+         * @param {object} oEvent - Button press event
+         */
+        onPaySelected(oEvent) {
+            const oTable = this.byId("billsTable");
+            const aSelectedItems = oTable.getSelectedItems();
+            
+            // Get unpaid bills only
+            const aUnpaidBills = [];
+            let fTotal = 0;
+            
+            aSelectedItems.forEach(item => {
+                const oBill = item.getBindingContext("bills").getObject();
+                if (oBill.status !== "Paid") {
+                    aUnpaidBills.push(oBill);
+                    fTotal += parseFloat(oBill.amount);
+                }
+            });
+            
+            if (aUnpaidBills.length === 0) {
+                MessageToast.show("Please select unpaid bills to pay");
+                return;
+            }
+            
+            // Show confirmation dialog
+            MessageBox.confirm(
+                `Pay ${aUnpaidBills.length} bill(s) for a total of RM${fTotal.toFixed(2)}?`,
+                {
+                    title: "Confirm Bulk Payment",
+                    onClose: (sAction) => {
+                        if (sAction === MessageBox.Action.OK) {
+                            this.processBulkPayment(aUnpaidBills, oTable);
+                        }
+                    }
+                }
+            );
+        },
+
+        /**
+         * Process bulk payment for multiple bills
+         * @param {Array} aUnpaidBills - Array of bill objects to pay
+         * @param {object} oTable - Table reference
+         */
+        processBulkPayment(aUnpaidBills, oTable) {
+            const oDateFormat = DateFormat.getDateInstance({ pattern: "yyyy-MM-dd" });
+            const sToday = oDateFormat.format(new Date());
+            let fTotalPaid = 0;
+            
+            // Update each bill
+            aUnpaidBills.forEach(oBill => {
+                oBill.status = "Paid";
+                oBill.paidDate = sToday;
+                oBill.receiptId = `RCP-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+                fTotalPaid += parseFloat(oBill.amount);
+            });
+            
+            // Refresh models
+            const oBillsModel = this.getView().getModel("bills");
+            oBillsModel.refresh(true);
+            this.updateTabCounts();
+            
+            // Clear selection
+            oTable.removeSelections(true);
+            
+            // Reset button
+            const oPayButton = this.byId("paySelectedBtn");
+            oPayButton.setText("Pay Selected (RM0.00)");
+            oPayButton.setEnabled(false);
+            
+            // Show success message
+            MessageBox.success(
+                `Successfully paid ${aUnpaidBills.length} bill(s)!\n\nTotal Amount: RM${fTotalPaid.toFixed(2)}`,
+                {
+                    title: "Bulk Payment Successful",
+                    onClose: () => {
+                        MessageToast.show("All receipts are available for download");
+                    }
+                }
+            );
+        },
+
+        /**
          * Format status text to SAP UI5 ValueState
          * @param {string} sStatus - Status string (Paid, Pending, Overdue)
          * @returns {string} ValueState

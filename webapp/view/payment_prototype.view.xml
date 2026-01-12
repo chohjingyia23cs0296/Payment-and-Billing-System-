@@ -101,7 +101,8 @@
 							path: 'bills>/',
 							sorter: { path: 'dueDate' }
 						}"
-						mode="None"
+						mode="MultiSelect"
+						selectionChange=".onSelectionChange"
 						class="sapUiResponsiveMargin">
 						<columns>
 							<Column id="descriptionCol" width="30%">
@@ -121,7 +122,9 @@
 							</Column>
 						</columns>
 						<items>
-							<ColumnListItem id="billItem">
+							<ColumnListItem 
+								id="billItem"
+								type="{= ${bills>status} === 'Paid' ? 'Inactive' : 'Active' }">
 								<cells>
 									<VBox id="descriptionVBox">
 										<Text id="feeTypeText" text="{bills>feeType}" class="sapUiTinyMarginBottom"/>
