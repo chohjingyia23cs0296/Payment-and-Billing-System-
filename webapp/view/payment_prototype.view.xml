@@ -66,11 +66,41 @@
 		<!-- Main Content -->
 		<f:content>
 			<VBox id="mainContentVBox" class="sapUiSmallMargin">
+				<!-- Icon Tab Bar for Filtering -->
+				<IconTabBar
+					id="billsTabBar"
+					select=".onTabSelect"
+					class="sapUiResponsiveMargin">
+					<items>
+						<IconTabFilter
+							id="allTab"
+							key="All"
+							text="All"
+							count="{/allCount}"/>
+						<IconTabSeparator id="tabSeparator1"/>
+						<IconTabFilter
+							id="overdueTab"
+							key="Overdue"
+							text="Overdue"
+							count="{/overdueCount}"
+							iconColor="Negative"/>
+						<IconTabFilter
+							id="pendingTab"
+							key="Pending"
+							text="Pending"
+							count="{/pendingCount}"
+							iconColor="Critical"/>
+					</items>
+				</IconTabBar>
+
 				<!-- Bills Table -->
 				<Panel id="billsPanel" headerText="Your Bills" class="sapUiResponsiveMargin">
 					<Table
 						id="billsTable"
-						items="{bills>/}"
+						items="{
+							path: 'bills>/',
+							sorter: { path: 'dueDate' }
+						}"
 						mode="None"
 						class="sapUiResponsiveMargin">
 						<columns>

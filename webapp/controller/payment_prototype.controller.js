@@ -4,8 +4,10 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/m/MessageToast",
     "sap/ui/core/ValueState",
-    "sap/ui/core/format/DateFormat"
-], (Controller, JSONModel, MessageBox, MessageToast, ValueState, DateFormat) => {
+    "sap/ui/core/format/DateFormat",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], (Controller, JSONModel, MessageBox, MessageToast, ValueState, DateFormat, Filter, FilterOperator) => {
     "use strict";
 
     return Controller.extend("paymentprototype.controller.payment_prototype", {
@@ -93,8 +95,56 @@ sap.ui.define([
 
             this.getView().setModel(oBillsModel, "bills");
             
+            // Initialize counts model for tab badges
+            const oCountsModel = new JSONModel({
+                allCount: 0,
+                overdueCount: 0,
+                pendingCount: 0
+            });
+            this.getView().setModel(oCountsModel);
+            
+            // Calculate initial counts
+            this.updateTabCounts();
+            
             // Check for due date reminders on init
             this.checkPaymentReminders();
+        },
+
+        /**
+         * Update tab counts based on bill statuses
+         */
+        updateTabCounts() {
+            const oBillsModel = this.getView().getModel("bills");
+            const aBills = oBillsModel.getData();
+            
+            const oCounts = {
+                allCount: aBills.length,
+                overdueCount: aBills.filter(b => b.status === "Overdue").length,
+                pendingCount: aBills.filter(b => b.status === "Pending").length
+            };
+            
+            this.getView().getModel().setData(oCounts);
+        },
+
+        /**
+         * Handle tab selection to filter bills table
+         * @param {object} oEvent - Tab select event
+         */
+        onTabSelect(oEvent) {
+            const sKey = oEvent.getParameter("key");
+            const oTable = this.byId("billsTable");
+            const oBinding = oTable.getBinding("items");
+            
+            let aFilters = [];
+            
+            if (sKey === "Overdue") {
+                aFilters.push(new Filter("status", FilterOperator.EQ, "Overdue"));
+            } else if (sKey === "Pending") {
+                aFilters.push(new Filter("status", FilterOperator.EQ, "Pending"));
+            }
+            // "All" tab has no filters
+            
+            oBinding.filter(aFilters);
         },
 
         /**
@@ -248,6 +298,9 @@ sap.ui.define([
             const oBillsModel = this.getView().getModel("bills");
             oBillsModel.refresh(true);
             
+            // Update tab counts after payment
+            this.updateTabCounts();
+            
             MessageBox.success(
                 `Payment successful!\n\nReceipt ID: ${oBill.receiptId}\nAmount: ${oBill.currency} ${oBill.amount}`,
                 {
@@ -330,6 +383,7 @@ Thank you for your payment!
         onRefresh() {
             const oBillsModel = this.getView().getModel("bills");
             oBillsModel.refresh(true);
+            this.updateTabCounts();
             MessageToast.show("Data refreshed");
             this.checkPaymentReminders();
         }
