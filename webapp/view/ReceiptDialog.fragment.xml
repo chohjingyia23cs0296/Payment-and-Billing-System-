@@ -1,0 +1,71 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:form="sap.ui.layout.form">
+	<Dialog
+		id="receiptDialog"
+		contentWidth="500px"
+		contentHeight="auto">
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<Title text="Payment Receipt" level="H3"/>
+				</contentMiddle>
+			</Bar>
+		</customHeader>
+		<content>
+			<!-- Success Banner -->
+			<MessageStrip
+				type="Success"
+				showIcon="true"
+				text="Payment Completed Successfully"
+				class="sapUiSmallMarginBottom"/>
+
+			<!-- Amount Section -->
+			<VBox alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
+				<Title 
+					text="{receiptData>/currency} {receiptData>/amount}"
+					titleStyle="H1"
+					class="sapUiSmallMarginTop"
+					style="color: #2e7d32; font-size: 3rem;"/>
+				<Text 
+					text="Paid via {receiptData>/paymentMethod}"
+					class="sapUiTinyMarginTop sapUiTinyMarginBottom"/>
+			</VBox>
+
+			<!-- Receipt Details -->
+			<form:SimpleForm
+				editable="false"
+				layout="ResponsiveGridLayout"
+				class="sapUiSmallMarginBegin sapUiSmallMarginEnd">
+				<form:content>
+					<Label text="Receipt ID"/>
+					<Text text="{receiptData>/receiptId}"/>
+					
+					<Label text="Date"/>
+					<Text text="{receiptData>/paidDate}"/>
+					
+					<Label text="Student Name"/>
+					<Text text="{receiptData>/studentName}"/>
+					
+					<Label text="Fee Description"/>
+					<Text text="{receiptData>/feeType}"/>
+					
+					<Label text="Details"/>
+					<Text text="{receiptData>/description}"/>
+				</form:content>
+			</form:SimpleForm>
+		</content>
+		<buttons>
+			<Button 
+				text="Download PDF" 
+				icon="sap-icon://pdf-attachment" 
+				type="Emphasized" 
+				press=".onDownloadPdf"/>
+			<Button 
+				text="Close" 
+				type="Transparent" 
+				press=".onCloseReceiptDialog"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

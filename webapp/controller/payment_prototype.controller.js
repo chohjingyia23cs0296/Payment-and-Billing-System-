@@ -6,8 +6,9 @@ sap.ui.define([
     "sap/ui/core/ValueState",
     "sap/ui/core/format/DateFormat",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], (Controller, JSONModel, MessageBox, MessageToast, ValueState, DateFormat, Filter, FilterOperator) => {
+    "sap/ui/model/FilterOperator",
+    "sap/ui/core/Fragment"
+], (Controller, JSONModel, MessageBox, MessageToast, ValueState, DateFormat, Filter, FilterOperator, Fragment) => {
     "use strict";
 
     return Controller.extend("paymentprototype.controller.payment_prototype", {
@@ -388,7 +389,7 @@ sap.ui.define([
         },
 
         /**
-         * Download receipt for paid bills
+         * Download receipt for paid bills - Opens professional receipt dialog
          * @param {object} oEvent - Button press event
          */
         onDownloadReceipt(oEvent) {
@@ -400,56 +401,57 @@ sap.ui.define([
                 return;
             }
             
-            // Simulate PDF receipt generation
-            const sReceiptContent = this.generateReceiptContent(oBill);
+            // Prepare receipt data
+            const oReceiptData = {
+                receiptId: oBill.receiptId,
+                paidDate: oBill.paidDate,
+                studentName: "Current Student",
+                feeType: oBill.feeType,
+                description: oBill.description,
+                amount: oBill.amount,
+                currency: oBill.currency,
+                paymentMethod: "Online Banking"
+            };
             
-            MessageBox.information(
-                sReceiptContent,
-                {
-                    title: "Receipt Preview",
-                    contentWidth: "400px",
-                    styleClass: "receiptDialog",
-                    actions: [
-                        new sap.m.Button({
-                            text: "Download PDF",
-                            icon: "sap-icon://download",
-                            press: function() {
-                                MessageToast.show("Receipt downloaded successfully!");
-                                // In real app: trigger actual PDF download
-                            }
-                        }),
-                        MessageBox.Action.CLOSE
-                    ]
-                }
-            );
+            // Create and set model for the fragment
+            const oReceiptModel = new JSONModel(oReceiptData);
+            
+            // Load and open the receipt dialog fragment
+            if (!this._receiptDialog) {
+                Fragment.load({
+                    id: this.getView().getId(),
+                    name: "paymentprototype.view.ReceiptDialog",
+                    controller: this
+                }).then((oDialog) => {
+                    this._receiptDialog = oDialog;
+                    this.getView().addDependent(this._receiptDialog);
+                    this._receiptDialog.setModel(oReceiptModel, "receiptData");
+                    this._receiptDialog.open();
+                });
+            } else {
+                this._receiptDialog.setModel(oReceiptModel, "receiptData");
+                this._receiptDialog.open();
+            }
         },
 
         /**
-         * Generate receipt content
-         * @param {object} oBill - Bill object
-         * @returns {string} Receipt HTML content
+         * Download PDF handler
          */
-        generateReceiptContent(oBill) {
-            return `
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   HOSTEL PAYMENT RECEIPT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        onDownloadPdf() {
+            MessageToast.show("Downloading PDF...");
+            // In real app: trigger actual PDF download
+            setTimeout(() => {
+                MessageToast.show("Receipt downloaded successfully!");
+            }, 1000);
+        },
 
-Receipt ID:    ${oBill.receiptId}
-Date:          ${oBill.paidDate}
-Student:       Current User
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Description:   ${oBill.feeType}
-Details:       ${oBill.description}
-Amount:        ${oBill.currency} ${oBill.amount}
-Status:        ${oBill.status}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Thank you for your payment!
-            `.trim();
+        /**
+         * Close receipt dialog
+         */
+        onCloseReceiptDialog() {
+            if (this._receiptDialog) {
+                this._receiptDialog.close();
+            }
         },
 
         /**
