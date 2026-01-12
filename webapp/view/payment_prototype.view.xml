@@ -1,190 +1,137 @@
 <mvc:View
 	controllerName="paymentprototype.controller.payment_prototype"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:f="sap.f"
-	xmlns:core="sap.ui.core"
 	xmlns="sap.m"
 	displayBlock="true"
 	height="100%">
-	<f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false">
-		<!-- Dynamic Page Title -->
-		<f:title>
-			<f:DynamicPageTitle id="dynamicPageTitle">
-				<f:heading>
-					<VBox id="titleVBox">
-						<Title id="pageTitle" text="Total Outstanding" level="H2"/>
-						<ObjectNumber
-							id="totalOutstandingNumber"
-							number="{/totalOutstanding}"
-							unit="RM"
-							emphasized="true"
-							state="Warning"
-							class="sapUiTinyMarginTop"/>
-					</VBox>
-				</f:heading>
-				<f:snappedContent>
-					<Text id="snappedBalance" text="Outstanding: RM {/totalOutstanding}"/>
-				</f:snappedContent>
-				<f:expandedContent>
-					<Text id="expandedWelcome" text="Hostel Payment System"/>
-				</f:expandedContent>
-				<f:actions>
-					<Button id="refreshBtn" icon="sap-icon://refresh" press=".onRefresh"/>
-					<Button id="settingsBtn" icon="sap-icon://action-settings"/>
-				</f:actions>
-			</f:DynamicPageTitle>
-		</f:title>
+	<Page id="paymentPage" title="Hostel Payment System" showHeader="true">
+		<content>
+			<!-- Header Section -->
+			<VBox id="headerVBox" class="sapUiSmallMargin">
+				<Title id="totalTitle" text="Total Outstanding" level="H3"/>
+				<ObjectNumber
+					id="totalOutstandingNumber"
+					number="{/totalOutstanding}"
+					unit="RM"
+					emphasized="true"
+					state="Warning"
+					class="sapUiSmallMarginTop sapUiSmallMarginBottom"/>
+			</VBox>
 
-		<!-- Dynamic Page Header -->
-		<f:header>
-			<f:DynamicPageHeader id="dynamicPageHeader" pinnable="true">
-				<VBox id="headerContentVBox">
-					<!-- Icon Tab Bar for Filtering -->
-					<IconTabBar
-						id="billsTabBar"
-						select=".onTabSelect"
-						class="sapUiSmallMarginBottom">
-						<items>
-							<IconTabFilter
-								id="allTab"
-								key="All"
-								text="All"
-								count="{/allCount}"/>
-							<IconTabSeparator id="tabSeparator1"/>
-							<IconTabFilter
-								id="overdueTab"
-								key="Overdue"
-								text="Overdue"
-								count="{/overdueCount}"
-								iconColor="Negative"/>
-							<IconTabFilter
-								id="pendingTab"
-								key="Pending"
-								text="Pending"
-								count="{/pendingCount}"
-								iconColor="Critical"/>
-						</items>
-					</IconTabBar>
+			<!-- Warning Messages -->
+			<VBox id="alertsVBox" class="sapUiSmallMargin">
+				<MessageStrip
+					id="overdueMessageStrip"
+					text="{/overdueCount} payment is overdue. Please settle immediately."
+					type="Error"
+					showIcon="true"
+					visible="{= ${/overdueCount} > 0 }"
+					class="sapUiTinyMarginBottom"/>
+				<MessageStrip
+					id="upcomingMessageStrip"
+					text="{/upcomingCount} payment(s) due within 3 days."
+					type="Warning"
+					showIcon="true"
+					visible="{= ${/upcomingCount} > 0 }"
+					class="sapUiTinyMarginBottom"/>
+			</VBox>
 
-					<!-- Payment Alerts -->
-					<VBox id="alertsVBox">
-						<MessageStrip
-							id="overdueMessageStrip"
-							text="{/overdueCount} payment is overdue. Please settle immediately to avoid penalties."
-							type="Error"
-							showIcon="true"
-							visible="{= ${/overdueCount} > 0 }"
-							class="sapUiTinyMarginBottom sapUiLargeText"/>
-						<MessageStrip
-							id="upcomingMessageStrip"
-							text="{/upcomingCount} payment(s) due within 3 days. Review your bills below."
-							type="Warning"
-							showIcon="true"
-							visible="{= ${/upcomingCount} > 0 }"
-							class="sapUiLargeText"/>
-					</VBox>
-				</VBox>
-			</f:DynamicPageHeader>
-		</f:header>
+			<!-- Tab Bar -->
+			<IconTabBar
+				id="billsTabBar"
+				select=".onTabSelect"
+				class="sapUiResponsiveMargin">
+				<items>
+					<IconTabFilter
+						id="allTab"
+						key="All"
+						text="All"
+						count="{/allCount}"/>
+					<IconTabSeparator id="tabSeparator1"/>
+					<IconTabFilter
+						id="overdueTab"
+						key="Overdue"
+						text="Overdue"
+						count="{/overdueCount}"
+						iconColor="Negative"/>
+					<IconTabFilter
+						id="pendingTab"
+						key="Pending"
+						text="Pending"
+						count="{/pendingCount}"
+						iconColor="Critical"/>
+				</items>
+			</IconTabBar>
 
-		<!-- Main Content -->
-		<f:content>
-			<VBox id="mainContentVBox" class="sapUiSmallMargin">
-				<!-- Icon Tab Bar for Filtering -->
-				<IconTabBar
-					id="billsTabBar"
-					select=".onTabSelect"
-					class="sapUiResponsiveMargin">
-					<items>
-						<IconTabFilter
-							id="allTab"
-							key="All"
-							text="All"
-							count="{/allCount}"/>
-						<IconTabSeparator id="tabSeparator1"/>
-						<IconTabFilter
-							id="overdueTab"
-							key="Overdue"
-							text="Overdue"
-							count="{/overdueCount}"
-							iconColor="Negative"/>
-						<IconTabFilter
-							id="pendingTab"
-							key="Pending"
-							text="Pending"
-							count="{/pendingCount}"
-							iconColor="Critical"/>
-					</items>
-				</IconTabBar>
-
-				<!-- Bills Table -->
-				<Panel id="billsPanel" headerText="Bills" class="sapUiResponsiveMargin">
-					<Table
-						id="billsTable"
-						items="{
-							path: 'bills>/',
-							sorter: { path: 'dueDate' }
-						}"
-						mode="None"
-						class="sapUiResponsiveMargin">
-						<columns>
-							<Column id="descriptionCol" width="30%">
-								<Text id="descriptionColHeader" text="Fee Description"/>
-							</Column>
-							<Column id="dueDateCol" width="15%">
-								<Text id="dueDateColHeader" text="Due Date"/>
-							</Column>
-							<Column id="amountCol" width="15%">
-								<Text id="amountColHeader" text="Amount"/>
-							</Column>
-							<Column id="statusCol" width="15%">
-								<Text id="statusColHeader" text="Status"/>
-							</Column>
-							<Column id="actionsCol" width="25%">
-								<Text id="actionsColHeader" text="Actions"/>
-							</Column>
-						</columns>
-						<items>
-							<ColumnListItem id="billItem">
-								<cells>
-									<VBox id="descriptionVBox">
-										<Text id="feeTypeText" text="{bills>feeType}" class="sapUiTinyMarginBottom"/>
-										<Text id="feeDescText" text="{bills>description}" class="sapUiTinyText"/>
-									</VBox>
-									<Text id="dueDateText" text="{bills>dueDate}"/>
-									<Text
-										id="amountText"
-										text="{bills>currency}{bills>amount}"
-										class="sapUiMediumMarginBegin sapUiMediumFontSize"
-										style="font-weight: bold; color: #000;"/>
-									<ObjectStatus
-										id="statusObject"
-										text="{bills>status}"
-										state="{path: 'bills>status', formatter: '.formatStatus'}"
-										icon="{path: 'bills>status', formatter: '.formatStatusIcon'}"/>
-									<HBox id="actionButtonsHBox">
-										<!-- Pay Now button: Only visible for Pending/Overdue -->
-										<Button
-											id="payNowBtn"
-											text="Pay Now"
-											type="Emphasized"
-											icon="sap-icon://payment-approval"
-											press=".onPayNow"
-											visible="{= ${bills>status} !== 'Paid' }"/>
-										<!-- Download button: Only visible for Paid bills -->
-										<Button
-											id="downloadReceiptBtn"
-											text="Download"
-											icon="sap-icon://download"
-											tooltip="Download Receipt"
-											press=".onDownloadReceipt"
-											visible="{= ${bills>status} === 'Paid' }"/>
-									</HBox>
-								</cells>
-							</ColumnListItem>
-						</items>
-					</Table>
-				</Panel>
-		</f:content>
-	</f:DynamicPage>
+			<!-- Bills Table -->
+			<Table
+				id="billsTable"
+				items="{
+					path: 'bills>/',
+					sorter: { path: 'dueDate' }
+				}"
+				mode="None"
+				class="sapUiResponsiveMargin">
+				<headerToolbar>
+					<Toolbar id="tableToolbar">
+						<Title id="tableTitle" text="Your Bills" level="H4"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column id="descriptionCol" width="30%">
+						<Text id="descriptionColHeader" text="Fee Description"/>
+					</Column>
+					<Column id="dueDateCol" width="15%">
+						<Text id="dueDateColHeader" text="Due Date"/>
+					</Column>
+					<Column id="amountCol" width="15%">
+						<Text id="amountColHeader" text="Amount"/>
+					</Column>
+					<Column id="statusCol" width="15%">
+						<Text id="statusColHeader" text="Status"/>
+					</Column>
+					<Column id="actionsCol" width="25%">
+						<Text id="actionsColHeader" text="Actions"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem id="billItem">
+						<cells>
+							<VBox id="descriptionVBox">
+								<Text id="feeTypeText" text="{bills>feeType}" class="sapUiTinyMarginBottom"/>
+								<Text id="feeDescText" text="{bills>description}" class="sapUiTinyText"/>
+							</VBox>
+							<Text id="dueDateText" text="{bills>dueDate}"/>
+							<Text
+								id="amountText"
+								text="{bills>currency}{bills>amount}"
+								class="sapUiMediumMarginBegin sapUiMediumFontSize"
+								style="font-weight: bold; color: #000;"/>
+							<ObjectStatus
+								id="statusObject"
+								text="{bills>status}"
+								state="{path: 'bills>status', formatter: '.formatStatus'}"
+								icon="{path: 'bills>status', formatter: '.formatStatusIcon'}"/>
+							<HBox id="actionButtonsHBox">
+								<Button
+									id="payNowBtn"
+									text="Pay Now"
+									type="Emphasized"
+									icon="sap-icon://payment-approval"
+									press=".onPayNow"
+									visible="{= ${bills>status} !== 'Paid' }"/>
+								<Button
+									id="downloadReceiptBtn"
+									text="Download"
+									icon="sap-icon://download"
+									tooltip="Download Receipt"
+									press=".onDownloadReceipt"
+									visible="{= ${bills>status} === 'Paid' }"/>
+							</HBox>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+	</Page>
 </mvc:View>
