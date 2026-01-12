@@ -60,16 +60,15 @@
 							unit="RM"
 							emphasized="true"
 							state="Error"
-							class="sapMObjectNumberLarge"
-							style="font-size: 8rem; font-weight: 900;"/>
+						class="sapMObjectNumberLarge"/>
 					</VBox>
 
 					<!-- Status Row -->
 					<HBox id="statusHBox" justifyContent="SpaceAround" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
 						<!-- Overdue Status -->
-						<VBox alignItems="Center" class="sapUiSmallMargin">
-							<core:Icon src="sap-icon://error" size="2.5rem" color="#d32f2f"/>
-							<Text text="Overdue" class="sapUiTinyMarginTop"/>
+						<VBox id="overdueStatusVBox" alignItems="Center" class="sapUiSmallMargin">
+							<core:Icon id="overdueIcon" src="sap-icon://error" size="2.5rem" color="#d32f2f"/>
+							<Text id="overdueLabel" text="Overdue" class="sapUiTinyMarginTop"/>
 							<ObjectNumber
 								id="overdueCount"
 								number="{/overdueCount}"
@@ -81,9 +80,9 @@
 						<ToolbarSeparator id="sep1"/>
 						
 						<!-- Pending Status -->
-						<VBox alignItems="Center" class="sapUiSmallMargin">
-							<core:Icon src="sap-icon://alert" size="2.5rem" color="#ed6c02"/>
-							<Text text="Pending" class="sapUiTinyMarginTop"/>
+						<VBox id="pendingStatusVBox" alignItems="Center" class="sapUiSmallMargin">
+							<core:Icon id="pendingIcon" src="sap-icon://alert" size="2.5rem" color="#ed6c02"/>
+							<Text id="pendingLabel" text="Pending" class="sapUiTinyMarginTop"/>
 							<ObjectNumber
 								id="pendingCountNum"
 								number="{/pendingCount}"
@@ -95,9 +94,9 @@
 						<ToolbarSeparator id="sep2"/>
 						
 						<!-- Paid Status -->
-						<VBox alignItems="Center" class="sapUiSmallMargin">
-							<core:Icon src="sap-icon://sys-enter-2" size="2.5rem" color="#2e7d32"/>
-							<Text text="Paid" class="sapUiTinyMarginTop"/>
+						<VBox id="paidStatusVBox" alignItems="Center" class="sapUiSmallMargin">
+							<core:Icon id="paidIcon" src="sap-icon://sys-enter-2" size="2.5rem" color="#2e7d32"/>
+							<Text id="paidLabel" text="Paid" class="sapUiTinyMarginTop"/>
 							<ObjectNumber
 								id="paidCountNum"
 								number="{/paidCount}"
@@ -220,7 +219,7 @@
 									press=".onPayNow"
 									visible="{= ${bills>status} !== 'Paid' }"/>
 								<Button
-									id="downloadReceiptBtn"
+									id="tableDownloadReceiptBtn"
 									text="Download"
 									icon="sap-icon://download"
 									tooltip="Download Receipt"

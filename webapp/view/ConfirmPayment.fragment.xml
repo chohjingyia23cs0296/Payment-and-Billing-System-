@@ -33,8 +33,7 @@
                     unit="{confirmData>/currency}"
                     emphasized="true"
                     state="None"
-                    class="sapMObjectNumberLarge sapUiMediumMarginBottom"
-                    style="font-size: 3rem; font-weight: 700;"/>
+                    class="sapMObjectNumberLarge sapUiMediumMarginBottom"/>
 
                 <!-- Due Date Info -->
                 <HBox id="dueDateHBox" class="sapUiSmallMarginBottom">
