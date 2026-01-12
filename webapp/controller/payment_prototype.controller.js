@@ -184,12 +184,22 @@ sap.ui.define([
          * @returns {string} Icon name
          */
         formatStatusIcon(sStatus) {
-            const mIconMap = {
-                "Paid": "sap-icon://sys-enter-2",
-                "Pending": "sap-icon://alert",
-                "Overdue": "sap-icon://error"
-            };
-            return mIconMap[sStatus] || "";
+            if (!sStatus) {
+                return "";
+            }
+            
+            // Use includes to handle case variations and partial matches
+            const statusLower = sStatus.toLowerCase();
+            
+            if (statusLower.includes("paid")) {
+                return "sap-icon://sys-enter-2"; // Checkmark
+            } else if (statusLower.includes("overdue")) {
+                return "sap-icon://error"; // X mark
+            } else if (statusLower.includes("pending")) {
+                return "sap-icon://alert"; // Triangle
+            }
+            
+            return "";
         },
 
         /**

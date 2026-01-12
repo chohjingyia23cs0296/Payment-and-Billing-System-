@@ -97,7 +97,7 @@
 				</IconTabBar>
 
 				<!-- Bills Table -->
-				<Panel id="billsPanel" headerText="Your Bills" class="sapUiResponsiveMargin">
+				<Panel id="billsPanel" headerText="Bills" class="sapUiResponsiveMargin">
 					<Table
 						id="billsTable"
 						items="{
