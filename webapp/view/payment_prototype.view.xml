@@ -5,115 +5,160 @@
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m"
 	displayBlock="true">
-	<Page id="paymentPrototypePage" title="Payment &amp; Billing">
+	<Page id="paymentPrototypePage" title="Payment &amp; Billing Tracker">
 		<content>
-			<!-- Payment Form Section -->
-			<VBox id="paymentFormVBox" class="sapUiMediumMargin">
-				<Title id="paymentFormTitle" text="Payment Details" level="H2"/>
-			<f:SimpleForm id="paymentFormSimpleForm" editable="true" layout="ResponsiveGridLayout">
-					<f:content>
-						<!-- Customer Name -->
-						<Label id="customerNameLabel" text="Customer Name"/>
-						<Input 
-							id="paymentFormCustomerName"
-							placeholder="Enter customer name"
-							value="{paymentModel>/customerName}"/>
-
-						<!-- Invoice Amount -->
-						<Label id="invoiceAmountLabel" text="Invoice Amount"/>
-						<Input 
-							id="paymentFormAmount"
-							placeholder="Enter amount"
-							value="{paymentModel>/amount}"
-							type="Number"/>
-
-						<!-- Invoice Number -->
-						<Label id="invoiceNumberLabel" text="Invoice Number"/>
-						<Input 
-							id="paymentFormInvoiceNumber"
-							placeholder="Enter invoice number"
-							value="{paymentModel>/invoiceNumber}"/>
-
-						<!-- Payment Method -->
-						<Label id="paymentMethodLabel" text="Payment Method"/>
-						<Select 
-							id="paymentFormPaymentMethod"
-							items="{paymentModel>/paymentMethods}"
-							selectedKey="{paymentModel>/selectedMethod}">
-							<core:Item id="selectItem" key="{paymentModel>key}" text="{paymentModel>text}"/>
-						</Select>
-
-						<!-- Due Date -->
-						<Label id="dueDateLabel" text="Due Date"/>
-						<DatePicker 
-							id="paymentFormDueDate"
-							value="{paymentModel>/dueDate}"
-							displayFormat="yyyy-MM-dd"/>
-					</f:content>
-				</f:SimpleForm>
-
-				<!-- Action Buttons -->
-				<HBox id="buttonHBox" class="sapUiSmallMarginTop" justifyContent="Center">
-					<Button 
-						id="paymentFormSubmitBtn"
-						text="Submit Payment" 
-						type="Emphasized"
-						press=".onSubmitPayment"/>
-					<Button 
-						id="paymentFormResetBtn"
-						text="Clear" 
-						press=".onReset"/>
+			<!-- Dashboard Section -->
+			<VBox id="dashboardVBox" class="sapUiMediumMargin">
+				<Title id="dashboardTitle" text="Payment Status Overview" level="H2"/>
+				<HBox id="statusHBox" class="sapUiMediumMargin" justifyContent="SpaceBetween">
+					<VBox id="paidVBox" class="sapUiSmallMargin">
+						<ObjectNumber id="paidNumber" number="4" emphasis="positive"/>
+						<Text id="paidLabel" text="Paid"/>
+					</VBox>
+					<VBox id="pendingVBox" class="sapUiSmallMargin">
+						<ObjectNumber id="pendingNumber" number="2" emphasis="warning"/>
+						<Text id="pendingLabel" text="Pending"/>
+					</VBox>
+					<VBox id="overdueVBox" class="sapUiSmallMargin">
+						<ObjectNumber id="overdueNumber" number="1" emphasis="negative"/>
+						<Text id="overdueLabel" text="Overdue"/>
+					</VBox>
+					<VBox id="totalVBox" class="sapUiSmallMargin">
+						<ObjectNumber id="totalNumber" number="$3,500.00" emphasis=""/>
+						<Text id="totalLabel" text="Total Due"/>
+					</VBox>
 				</HBox>
 			</VBox>
 
 			<!-- Divider -->
-			<VBox id="dividerVBox" class="sapUiMediumMargin">
-				<core:HTML id="dividerHtml" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
+			<VBox id="dividerVBox1" class="sapUiMediumMargin">
+				<core:HTML id="dividerHtml1" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
 			</VBox>
 
-			<!-- Billing History Section -->
-			<VBox id="billingHistoryVBox" class="sapUiMediumMargin">
-				<Title id="billingHistoryTitle" text="Recent Payments" level="H2"/>
+			<!-- Reminders/Alerts Section -->
+			<VBox id="remindersVBox" class="sapUiMediumMargin">
+				<Title id="remindersTitle" text="Due Payment Reminders" level="H2"/>
+				<List id="reminderList" items="{paymentModel>/reminders}">
+					<StandardListItem
+						id="reminderListItem"
+						title="{paymentModel>feeType}"
+						description="{paymentModel>dueDate}"
+						highlight="{paymentModel>status}"
+						info="{paymentModel>amount}"/>
+				</List>
+			</VBox>
+
+			<!-- Divider -->
+			<VBox id="dividerVBox2" class="sapUiMediumMargin">
+				<core:HTML id="dividerHtml2" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
+			</VBox>
+
+			<!-- Fee Records Section -->
+			<VBox id="feeRecordsVBox" class="sapUiMediumMargin">
+				<Title id="feeRecordsTitle" text="Hostel Fee Records" level="H2"/>
+				
+				<!-- Filter Bar -->
+				<HBox id="filterHBox" class="sapUiSmallMarginBottom">
+					<Select 
+						id="feeTypeSelect"
+						items="{paymentModel>/feeTypes}"
+						selectedKey="{paymentModel>/selectedFeeType}"
+						width="200px">
+						<core:Item id="feeTypeItem" key="{paymentModel>key}" text="{paymentModel>text}"/>
+					</Select>
+					<Select 
+						id="paymentStatusSelect"
+						items="{paymentModel>/statuses}"
+						selectedKey="{paymentModel>/selectedStatus}"
+						width="200px"
+						class="sapUiSmallMarginStart">
+						<core:Item id="statusItem" key="{paymentModel>key}" text="{paymentModel>text}"/>
+					</Select>
+				</HBox>
+
+				<!-- Fee Table -->
 				<Table 
-					id="paymentBillingTable"
-					items="{paymentModel>/billingHistory}"
+					id="feeTable"
+					items="{paymentModel>/feeRecords}"
 					mode="SingleSelectMaster">
 					<columns>
-						<Column id="invoiceCol">
-							<Text id="invoiceColText" text="Invoice #"/>
+						<Column id="feeTypeCol" width="15%">
+							<Text id="feeTypeColText" text="Fee Type"/>
 						</Column>
-						<Column id="customerCol">
-							<Text id="customerColText" text="Customer"/>
-						</Column>
-						<Column id="amountCol">
+						<Column id="amountCol" width="15%">
 							<Text id="amountColText" text="Amount"/>
 						</Column>
-						<Column id="methodCol">
-							<Text id="methodColText" text="Payment Method"/>
+						<Column id="dueDateCol" width="15%">
+							<Text id="dueDateColText" text="Due Date"/>
 						</Column>
-						<Column id="dateCol">
-							<Text id="dateColText" text="Date"/>
+						<Column id="paidDateCol" width="15%">
+							<Text id="paidDateColText" text="Paid Date"/>
 						</Column>
-						<Column id="statusCol">
+						<Column id="statusCol" width="15%">
 							<Text id="statusColText" text="Status"/>
+						</Column>
+						<Column id="actionCol" width="25%">
+							<Text id="actionColText" text="Actions"/>
 						</Column>
 					</columns>
 					<items>
-						<ColumnListItem id="billingListItem">
+						<ColumnListItem id="feeListItem">
 							<cells>
-								<Text id="billingInvoiceText" text="{paymentModel>invoiceNumber}"/>
-								<Text id="billingCustomerText" text="{paymentModel>customerName}"/>
-								<Text id="billingAmountText" text="{paymentModel>amount}"/>
-								<Text id="billingMethodText" text="{paymentModel>method}"/>
-								<Text id="billingDateText" text="{paymentModel>date}"/>
+								<Text id="feeTypeText" text="{paymentModel>feeType}"/>
+								<Text id="feeAmountText" text="{paymentModel>amount}"/>
+								<Text id="feeDueDateText" text="{paymentModel>dueDate}"/>
+								<Text id="feePaidDateText" text="{paymentModel>paidDate}"/>
 								<ObjectStatus 
-									id="billingStatusObject"
+									id="feeStatusObject"
 									text="{paymentModel>status}"
 									state="{paymentModel>statusState}"/>
+								<HBox id="actionHBox">
+									<Button 
+										id="payBtn"
+										text="Pay" 
+										type="Emphasized"
+										press=".onPayFee"
+										enabled="{paymentModel>enablePay}"
+										width="70px"/>
+									<Button 
+										id="receiptBtn"
+										text="Receipt" 
+										press=".onGenerateReceipt"
+										enabled="{paymentModel>enableReceipt}"
+										class="sapUiSmallMarginStart"
+										width="70px"/>
+								</HBox>
 							</cells>
 						</ColumnListItem>
 					</items>
 				</Table>
+			</VBox>
+
+			<!-- Divider -->
+			<VBox id="dividerVBox3" class="sapUiMediumMargin">
+				<core:HTML id="dividerHtml3" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
+			</VBox>
+
+			<!-- Payment Gateway Section -->
+			<VBox id="gatewayVBox" class="sapUiMediumMargin">
+				<Title id="gatewayTitle" text="Payment Methods" level="H2"/>
+				<HBox id="paymentMethodBox" class="sapUiMediumMargin" justifyContent="Center" space="Medium">
+					<Button 
+						id="bankTransferBtn"
+						text="Bank Transfer" 
+						icon="sap-icon://money-bills"
+						press=".onBankTransfer"/>
+					<Button 
+						id="eWalletBtn"
+						text="E-Wallet" 
+						icon="sap-icon://wallet"
+						press=".onEWallet"/>
+					<Button 
+						id="creditCardBtn"
+						text="Credit Card" 
+						icon="sap-icon://payment-cards"
+						press=".onCreditCard"/>
+				</HBox>
 			</VBox>
 		</content>
 	</Page>
