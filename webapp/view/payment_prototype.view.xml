@@ -128,37 +128,6 @@
 						</items>
 					</Table>
 				</Panel>
-
-				<!-- Payment Methods Panel -->
-				<Panel id="paymentMethodsPanel" headerText="Payment Methods" class="sapUiResponsiveMargin" expandable="true" expanded="false">
-					<VBox id="paymentMethodsVBox" class="sapUiSmallMargin">
-						<Text id="secureText" text="🔒 Secure Payment Gateway" class="securePaymentText sapUiSmallMarginBottom"/>
-						
-						<List id="paymentMethodsList" mode="SingleSelectMaster">
-							<StandardListItem
-								id="fpxItem"
-								title="Online Banking (FPX)"
-								description="Instant transfer from your bank account"
-								icon="sap-icon://money-bills"
-								type="Active"
-								press=".onSelectPaymentMethod"/>
-							<StandardListItem
-								id="ewalletItem"
-								title="E-Wallet"
-								description="Touch 'n Go, GrabPay, Boost"
-								icon="sap-icon://wallet"
-								type="Active"
-								press=".onSelectPaymentMethod"/>
-							<StandardListItem
-								id="cardItem"
-								title="Credit/Debit Card"
-								description="Visa, Mastercard, American Express"
-								icon="sap-icon://card"
-								type="Active"
-								press=".onSelectPaymentMethod"/>
-						</List>
-					</VBox>
-				</Panel>
 			</VBox>
 		</f:content>
 	</f:DynamicPage>
