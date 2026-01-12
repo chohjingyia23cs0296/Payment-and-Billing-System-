@@ -317,17 +317,19 @@ sap.ui.define([
          * @param {string} sMethod - Payment method
          */
         processPayment(oContext, sMethod) {
-            const oBill = oContext.getObject();
+            const oBillsModel = this.getView().getModel("bills");
+            const sPath = oContext.getPath();
             const oDateFormat = DateFormat.getDateInstance({ pattern: "yyyy-MM-dd" });
             const sToday = oDateFormat.format(new Date());
+            const sReceiptId = `RCP-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
             
-            // Update bill status
-            oBill.status = "Paid";
-            oBill.paidDate = sToday;
-            oBill.receiptId = `RCP-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+            // Update bill status using model setProperty for proper binding updates
+            oBillsModel.setProperty(sPath + "/status", "Paid");
+            oBillsModel.setProperty(sPath + "/paidDate", sToday);
+            oBillsModel.setProperty(sPath + "/receiptId", sReceiptId);
             
-            const oBillsModel = this.getView().getModel("bills");
-            oBillsModel.refresh(true);
+            // Get the updated bill object for display
+            const oBill = oContext.getObject();
             
             // Update tab counts after payment
             this.updateTabCounts();
