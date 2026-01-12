@@ -7,57 +7,104 @@
 	height="100%">
 	<Page id="paymentPage" title="Hostel Payment System" showHeader="true">
 		<content>
-			<!-- Header Section with Large Outstanding Amount -->
-			<VBox id="headerVBox" class="sapUiMediumMargin" alignItems="Center">
-				<Title id="totalTitle" text="Total Outstanding" level="H2" class="sapUiSmallMarginBottom"/>
-				<ObjectNumber
-					id="totalOutstandingNumber"
-					number="{/totalOutstanding}"
-					unit="RM"
-					emphasized="true"
-					state="Error"
-					class="sapUiLargeText"
-					style="font-size: 5rem; font-weight: 900; color: #d32f2f;"/>
-			</VBox>
+			<!-- Welcome Bar Section -->
+			<Panel 
+				id="welcomePanel" 
+				backgroundDesign="Solid" 
+				width="auto" 
+				class="sapUiResponsiveMargin sapUiSmallMarginBottom">
+				<content>
+					<VBox class="sapUiSmallMargin">
+						<!-- Heading with Avatar -->
+						<HBox alignItems="Center" class="sapUiTinyMarginBottom">
+							<Avatar 
+								src="sap-icon://employee" 
+								displaySize="XS" 
+								class="sapUiTinyMarginEnd"/>
+							<Title 
+								text="Welcome, Choh Jing Yi" 
+								level="H3"/>
+						</HBox>
+						
+						<!-- Expanded Content -->
+						<HBox alignItems="Center">
+							<Label 
+								text="Student ID: A23CS0296" 
+								class="sapUiTinyMarginEnd"/>
+							<Label text="Bachelor of Computer Science"/>
+						</HBox>
+					</VBox>
+				</content>
+			</Panel>
 
-			<!-- Stats Cards Section -->
-			<HBox id="statsHBox" justifyContent="SpaceAround" class="sapUiSmallMarginBegin sapUiSmallMarginEnd sapUiMediumMarginBottom">
-				<!-- Overdue Card -->
-				<VBox id="overdueCard" alignItems="Center" class="sapUiSmallMargin" style="flex: 1; padding: 1.5rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #d32f2f;">
-					<core:Icon src="sap-icon://error" size="2rem" color="#d32f2f"/>
-					<Title id="overdueTitle" text="Overdue" level="H5" class="sapUiTinyMarginTop"/>
-					<ObjectNumber
-						id="overdueCount"
-						number="{/overdueCount}"
-						emphasized="true"
-						state="Error"
-						class="sapUiSmallMarginTop"/>
-				</VBox>
+			<!-- Unified Dashboard Widget Panel -->
+			<Panel 
+				id="dashboardPanel" 
+				backgroundDesign="Solid" 
+				width="auto" 
+				class="sapUiResponsiveMargin">
+				<content>
+					<!-- The Big Amount -->
+					<VBox id="headerVBox" alignItems="Center" class="sapUiMediumMarginTop">
+						<Label 
+							id="totalLabel" 
+							text="Total Outstanding" 
+							design="Bold" 
+							class="sapUiSmallMarginBottom"/>
+						<ObjectNumber
+							id="totalOutstandingNumber"
+							number="{/totalOutstanding}"
+							unit="RM"
+							emphasized="true"
+							state="Error"
+							class="sapMObjectNumberLarge"
+							style="font-size: 8rem; font-weight: 900;"/>
+					</VBox>
 
-				<!-- Pending Card -->
-				<VBox id="pendingCard" alignItems="Center" class="sapUiSmallMargin" style="flex: 1; padding: 1.5rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #ed6c02;">
-					<core:Icon src="sap-icon://alert" size="2rem" color="#ed6c02"/>
-					<Title id="pendingTitle" text="Pending" level="H5" class="sapUiTinyMarginTop"/>
-					<ObjectNumber
-						id="pendingCountNum"
-						number="{/pendingCount}"
-						emphasized="true"
-						state="Warning"
-						class="sapUiSmallMarginTop"/>
-				</VBox>
-
-				<!-- Paid Card -->
-				<VBox id="paidCard" alignItems="Center" class="sapUiSmallMargin" style="flex: 1; padding: 1.5rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #2e7d32;">
-					<core:Icon src="sap-icon://sys-enter-2" size="2rem" color="#2e7d32"/>
-					<Title id="paidTitle" text="Paid" level="H5" class="sapUiTinyMarginTop"/>
-					<ObjectNumber
-						id="paidCountNum"
-						number="{/paidCount}"
-						emphasized="true"
-						state="Success"
-						class="sapUiSmallMarginTop"/>
-				</VBox>
-			</HBox>
+					<!-- Status Row -->
+					<HBox id="statusHBox" justifyContent="SpaceAround" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
+						<!-- Overdue Status -->
+						<VBox alignItems="Center" class="sapUiSmallMargin">
+							<core:Icon src="sap-icon://error" size="2.5rem" color="#d32f2f"/>
+							<Text text="Overdue" class="sapUiTinyMarginTop"/>
+							<ObjectNumber
+								id="overdueCount"
+								number="{/overdueCount}"
+								emphasized="true"
+								state="Error"
+								class="sapUiTinyMarginTop"/>
+						</VBox>
+						
+						<ToolbarSeparator id="sep1"/>
+						
+						<!-- Pending Status -->
+						<VBox alignItems="Center" class="sapUiSmallMargin">
+							<core:Icon src="sap-icon://alert" size="2.5rem" color="#ed6c02"/>
+							<Text text="Pending" class="sapUiTinyMarginTop"/>
+							<ObjectNumber
+								id="pendingCountNum"
+								number="{/pendingCount}"
+								emphasized="true"
+								state="Warning"
+								class="sapUiTinyMarginTop"/>
+						</VBox>
+						
+						<ToolbarSeparator id="sep2"/>
+						
+						<!-- Paid Status -->
+						<VBox alignItems="Center" class="sapUiSmallMargin">
+							<core:Icon src="sap-icon://sys-enter-2" size="2.5rem" color="#2e7d32"/>
+							<Text text="Paid" class="sapUiTinyMarginTop"/>
+							<ObjectNumber
+								id="paidCountNum"
+								number="{/paidCount}"
+								emphasized="true"
+								state="Success"
+								class="sapUiTinyMarginTop"/>
+						</VBox>
+					</HBox>
+				</content>
+			</Panel>
 
 			<!-- Warning Messages -->
 			<VBox id="alertsVBox" class="sapUiSmallMargin">

@@ -1,5 +1,37 @@
 /* Modern Fintech Payment Interface Styles */
 
+/* Payment Success Animation - Bouncing Checkmark */
+@keyframes successBounce {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.successIconBounce {
+    animation: successBounce 0.6s ease-out;
+}
+
+/* Optional: Add a subtle glow effect */
+@keyframes successGlow {
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
 /* General Page Background */
 .modernPaymentPage .sapMPageBg {
     background: #f5f7fa !important;
