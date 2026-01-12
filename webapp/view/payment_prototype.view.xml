@@ -1,155 +1,165 @@
 <mvc:View
 	controllerName="paymentprototype.controller.payment_prototype"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:f="sap.ui.layout.form"
+	xmlns:f="sap.f"
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m"
-	displayBlock="true">
-	<Page id="paymentPrototypePage" title="Hostel Payment System" class="modernPaymentPage" showHeader="false">
-		<customHeader>
-			<Bar id="customHeaderBar" class="customHeaderBar">
-				<contentLeft>
-					<Title id="headerTitle" text="Hostel Payment" class="headerTitle"/>
-				</contentLeft>
-				<contentRight>
-					<HBox id="userProfileBox" alignItems="Center">
-						<Text id="welcomeText" text="Welcome, Student" class="welcomeText"/>
-						<Avatar id="userAvatar" src="sap-icon://employee" class="userAvatar" displaySize="S" backgroundColor="Accent6"/>
-					</HBox>
-				</contentRight>
-			</Bar>
-		</customHeader>
-		<content>
-			<!-- Outstanding Balance Card -->
-			<VBox id="outstandingCardVBox" class="outstandingCard">
-				<VBox id="outstandingContent" class="outstandingContent">
-					<Text id="outstandingLabel" text="Total Outstanding" class="outstandingLabel"/>
-					<Text id="outstandingAmount" text="RM 3,500.00" class="outstandingAmount"/>
-					<HBox id="statsHBox" class="statsHBox" justifyContent="SpaceBetween">
-						<VBox id="paidStatVBox" class="statItem">
-							<Text id="paidStatValue" text="4" class="statValue"/>
-							<Text id="paidStatLabel" text="Paid" class="statLabel"/>
-						</VBox>
-						<VBox id="pendingStatVBox" class="statItem">
-							<Text id="pendingStatValue" text="2" class="statValue"/>
-							<Text id="pendingStatLabel" text="Pending" class="statLabel"/>
-						</VBox>
-						<VBox id="overdueStatVBox" class="statItem">
-							<Text id="overdueStatValue" text="1" class="statValue"/>
-							<Text id="overdueStatLabel" text="Overdue" class="statLabel"/>
-						</VBox>
-					</HBox>
-				</VBox>
-			</VBox>
+	displayBlock="true"
+	height="100%">
+	<f:DynamicPage id="dynamicPageId" toggleHeaderOnTitleClick="false">
+		<!-- Dynamic Page Title -->
+		<f:title>
+			<f:DynamicPageTitle id="dynamicPageTitle">
+				<f:heading>
+					<Title id="pageTitle" text="Hostel Payment System"/>
+				</f:heading>
+				<f:snappedContent>
+					<Text id="snappedBalance" text="Outstanding: RM 3,500.00"/>
+				</f:snappedContent>
+				<f:expandedContent>
+					<Text id="expandedWelcome" text="Welcome, Student"/>
+				</f:expandedContent>
+				<f:actions>
+					<Button id="refreshBtn" icon="sap-icon://refresh" press=".onRefresh"/>
+					<Button id="settingsBtn" icon="sap-icon://action-settings"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
 
-			<!-- Divider -->
-			<VBox id="dividerVBox1" class="sapUiMediumMargin">
-				<core:HTML id="dividerHtml1" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
-			</VBox>
+		<!-- Dynamic Page Header -->
+		<f:header>
+			<f:DynamicPageHeader id="dynamicPageHeader" pinnable="true">
+				<VBox id="headerContentVBox">
+					<!-- Outstanding Balance Card -->
+					<VBox id="outstandingCardVBox" class="outstandingCard">
+						<ObjectHeader
+							id="balanceHeader"
+							title="RM 3,500.00"
+							intro="Total Outstanding"
+							class="balanceObjectHeader">
+							<statuses>
+								<ObjectStatus id="paidStatus" text="4 Paid" state="Success"/>
+								<ObjectStatus id="pendingStatus" text="2 Pending" state="Warning"/>
+								<ObjectStatus id="overdueStatus" text="1 Overdue" state="Error"/>
+							</statuses>
+						</ObjectHeader>
+					</VBox>
 
-			<!-- Quick Alerts -->
-			<VBox id="alertsVBox" class="alertsSection">
-				<Title id="alertsTitle" text="Payment Alerts" level="H4" class="sectionTitle"/>
-				<VBox id="alertsList" class="alertsList">
-					<MessageStrip id="overdueAlert" text="1 payment is overdue. Please settle immediately to avoid penalties." type="Error" showIcon="true" class="alertItem"/>
-					<MessageStrip id="upcomingAlert" text="2 payments due soon. Click below to view details." type="Warning" showIcon="true" class="alertItem"/>
-				</VBox>
-			</VBox>
-
-			<!-- Divider -->
-			<VBox id="dividerVBox2" class="sapUiMediumMargin">
-				<core:HTML id="dividerHtml2" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
-			</VBox>
-
-			<!-- Bill List -->
-			<VBox id="billListVBox" class="billListSection">
-				<HBox id="billHeaderHBox" justifyContent="SpaceBetween" alignItems="Center" class="billHeader">
-					<Title id="billListTitle" text="Your Bills" level="H4" class="sectionTitle"/>
-					<Select id="filterSelect" selectedKey="all" width="150px" class="filterSelect">
-						<core:Item id="filterAll" key="all" text="All Bills"/>
-						<core:Item id="filterPending" key="pending" text="Pending"/>
-						<core:Item id="filterPaid" key="paid" text="Paid"/>
-					</Select>
-				</HBox>
-				
-				<!-- Bill Cards -->
-				<VBox id="billCardsContainer" items="{paymentModel>/feeRecords}">
-					<VBox class="billCard">
-						<HBox justifyContent="SpaceBetween" alignItems="Center">
-							<VBox width="60%">
-								<Text text="{paymentModel>feeType}" class="billTitle"/>
-								<Text text="Due: {paymentModel>dueDate}" class="billDueDate"/>
-							</VBox>
-							<VBox alignItems="End">
-								<Text text="{paymentModel>amount}" class="billAmount"/>
-								<ObjectStatus text="{paymentModel>status}" state="{paymentModel>statusState}" class="billStatus"/>
-							</VBox>
-						</HBox>
-						<HBox justifyContent="End" class="billActions">
-							<Button 
-								text="Pay via FPX" 
-								type="Ghost"
-								icon="sap-icon://payment-approval"
-								press=".onPayFee"
-								enabled="{paymentModel>enablePay}"
-								class="payButton"/>
-							<Button 
-								icon="sap-icon://download" 
-								type="Transparent"
-								press=".onGenerateReceipt"
-								enabled="{paymentModel>enableReceipt}"
-								tooltip="Download Receipt"
-								class="sapUiTinyMarginStart"/>
-						</HBox>
+					<!-- Payment Alerts -->
+					<VBox id="alertsVBox" class="sapUiSmallMarginTop">
+						<MessageStrip
+							id="overdueMessageStrip"
+							text="1 payment is overdue. Please settle immediately to avoid penalties."
+							type="Error"
+							showIcon="true"
+							class="sapUiTinyMarginBottom"/>
+						<MessageStrip
+							id="upcomingMessageStrip"
+							text="2 payments due within 3 days. Review your bills below."
+							type="Warning"
+							showIcon="true"/>
 					</VBox>
 				</VBox>
-			</VBox>
+			</f:DynamicPageHeader>
+		</f:header>
 
-			<!-- Divider -->
-			<VBox id="dividerVBox3" class="sapUiMediumMargin">
-				<core:HTML id="dividerHtml3" content="&lt;hr style='margin: 20px 0;'/&gt;"/>
-			</VBox>
+		<!-- Main Content -->
+		<f:content>
+			<VBox id="mainContentVBox" class="sapUiSmallMargin">
+				<!-- Bills Table -->
+				<Panel id="billsPanel" headerText="Your Bills" class="sapUiResponsiveMargin">
+					<Table
+						id="billsTable"
+						items="{bills>/}"
+						mode="None"
+						class="sapUiResponsiveMargin">
+						<columns>
+							<Column id="descriptionCol" width="30%">
+								<Text id="descriptionColHeader" text="Fee Description"/>
+							</Column>
+							<Column id="dueDateCol" width="15%">
+								<Text id="dueDateColHeader" text="Due Date"/>
+							</Column>
+							<Column id="amountCol" width="15%">
+								<Text id="amountColHeader" text="Amount"/>
+							</Column>
+							<Column id="statusCol" width="15%">
+								<Text id="statusColHeader" text="Status"/>
+							</Column>
+							<Column id="actionsCol" width="25%">
+								<Text id="actionsColHeader" text="Actions"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem id="billItem">
+								<cells>
+									<VBox id="descriptionVBox">
+										<Text id="feeTypeText" text="{bills>feeType}" class="sapUiTinyMarginBottom"/>
+										<Text id="feeDescText" text="{bills>description}" class="sapUiTinyText"/>
+									</VBox>
+									<Text id="dueDateText" text="{bills>dueDate}"/>
+									<ObjectNumber
+										id="amountNumber"
+										number="{bills>amount}"
+										unit="{bills>currency}"
+										emphasized="true"/>
+									<ObjectStatus
+										id="statusObject"
+										text="{bills>status}"
+										state="{path: 'bills>status', formatter: '.formatStatus'}"/>
+									<HBox id="actionButtonsHBox">
+										<Button
+											id="payNowBtn"
+											text="Pay Now"
+											type="Emphasized"
+											icon="sap-icon://payment-approval"
+											press=".onPayNow"
+											visible="{= ${bills>status} !== 'Paid' }"
+											class="sapUiTinyMarginEnd"/>
+										<Button
+											id="downloadReceiptBtn"
+											icon="sap-icon://download"
+											tooltip="Download Receipt"
+											press=".onDownloadReceipt"
+											enabled="{= ${bills>status} === 'Paid' }"/>
+									</HBox>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</Panel>
 
-			<!-- Payment Methods -->
-			<VBox id="paymentMethodsVBox" class="paymentMethodsSection">
-				<VBox class="secureIndicator">
-					<HBox alignItems="Center" class="sapUiTinyMarginBottom">
-						<core:Icon src="sap-icon://locked" color="#2ecc71" class="sapUiTinyMarginEnd"/>
-						<Text text="Secure Payment Gateway" class="secureText"/>
-					</HBox>
-				</VBox>
-				
-				<Title id="paymentMethodTitle" text="Select Payment Method" level="H4" class="sectionTitle"/>
-				
-				<VBox id="paymentOptionsVBox" class="paymentOptions">
-					<HBox class="paymentMethodCard" press=".onBankTransfer">
-						<core:Icon src="sap-icon://money-bills" size="2rem" class="paymentIcon"/>
-						<VBox class="sapUiSmallMarginStart">
-							<Text text="Online Banking (FPX)" class="paymentMethodName"/>
-							<Text text="Instant transfer from your bank" class="paymentMethodDesc"/>
-						</VBox>
-						<core:Icon src="sap-icon://navigation-right-arrow" class="navArrow"/>
-					</HBox>
-					
-					<HBox class="paymentMethodCard" press=".onEWallet">
-						<core:Icon src="sap-icon://wallet" size="2rem" class="paymentIcon"/>
-						<VBox class="sapUiSmallMarginStart">
-							<Text text="E-Wallet" class="paymentMethodName"/>
-							<Text text="Touch 'n Go, GrabPay, Boost" class="paymentMethodDesc"/>
-						</VBox>
-						<core:Icon src="sap-icon://navigation-right-arrow" class="navArrow"/>
-					</HBox>
-					
-					<HBox class="paymentMethodCard" press=".onCreditCard">
-						<core:Icon src="sap-icon://card" size="2rem" class="paymentIcon"/>
-						<VBox class="sapUiSmallMarginStart">
-							<Text text="Credit/Debit Card" class="paymentMethodName"/>
-							<Text text="Visa, Mastercard, American Express" class="paymentMethodDesc"/>
-						</VBox>
-						<core:Icon src="sap-icon://navigation-right-arrow" class="navArrow"/>
-					</HBox>
-				</VBox>
+				<!-- Payment Methods Panel -->
+				<Panel id="paymentMethodsPanel" headerText="Payment Methods" class="sapUiResponsiveMargin" expandable="true" expanded="false">
+					<VBox id="paymentMethodsVBox" class="sapUiSmallMargin">
+						<Text id="secureText" text="🔒 Secure Payment Gateway" class="securePaymentText sapUiSmallMarginBottom"/>
+						
+						<List id="paymentMethodsList" mode="SingleSelectMaster">
+							<StandardListItem
+								id="fpxItem"
+								title="Online Banking (FPX)"
+								description="Instant transfer from your bank account"
+								icon="sap-icon://money-bills"
+								type="Active"
+								press=".onSelectPaymentMethod"/>
+							<StandardListItem
+								id="ewalletItem"
+								title="E-Wallet"
+								description="Touch 'n Go, GrabPay, Boost"
+								icon="sap-icon://wallet"
+								type="Active"
+								press=".onSelectPaymentMethod"/>
+							<StandardListItem
+								id="cardItem"
+								title="Credit/Debit Card"
+								description="Visa, Mastercard, American Express"
+								icon="sap-icon://card"
+								type="Active"
+								press=".onSelectPaymentMethod"/>
+						</List>
+					</VBox>
+				</Panel>
 			</VBox>
-		</content>
-	</Page>
+		</f:content>
+	</f:DynamicPage>
 </mvc:View>
