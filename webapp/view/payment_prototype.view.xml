@@ -124,7 +124,8 @@
 						<items>
 							<ColumnListItem 
 								id="billItem"
-								type="{= ${bills>status} === 'Paid' ? 'Inactive' : 'Active' }">
+								type="{= ${bills>status} === 'Paid' ? 'Inactive' : 'Active' }"
+								unselectable="{= ${bills>status} === 'Paid' }">
 								<cells>
 									<VBox id="descriptionVBox">
 										<Text id="feeTypeText" text="{bills>feeType}" class="sapUiTinyMarginBottom"/>
@@ -140,14 +141,6 @@
 										text="{bills>status}"
 										state="{path: 'bills>status', formatter: '.formatStatus'}"/>
 									<HBox id="actionButtonsHBox">
-										<Button
-											id="payNowBtn"
-											text="Pay Now"
-											type="Emphasized"
-											icon="sap-icon://payment-approval"
-											press=".onPayNow"
-											visible="{= ${bills>status} !== 'Paid' }"
-											class="sapUiTinyMarginEnd"/>
 										<Button
 											id="downloadReceiptBtn"
 											text="Download"
