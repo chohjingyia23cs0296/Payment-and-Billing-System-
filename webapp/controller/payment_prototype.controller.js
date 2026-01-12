@@ -283,7 +283,7 @@ sap.ui.define([
                     styleClass: "receiptDialog",
                     actions: [
                         new sap.m.Button({
-                            text: "Download PDF",
+                            text: "Download",
                             icon: "sap-icon://download",
                             press: () => {
                                 MessageToast.show("Receipt downloaded successfully!");

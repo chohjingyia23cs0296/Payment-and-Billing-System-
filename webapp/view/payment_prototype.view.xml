@@ -98,11 +98,10 @@
 										<Text id="feeDescText" text="{bills>description}" class="sapUiTinyText"/>
 									</VBox>
 									<Text id="dueDateText" text="{bills>dueDate}"/>
-									<ObjectNumber
-										id="amountNumber"
-										number="{bills>amount}"
-										unit="{bills>currency}"
-										emphasized="true"/>
+									<Text
+										id="amountText"
+										text="{bills>currency}{bills>amount}"
+										class="sapUiMediumMarginBegin sapThemeHighlight-asColor"/>
 									<ObjectStatus
 										id="statusObject"
 										text="{bills>status}"
@@ -118,6 +117,7 @@
 											class="sapUiTinyMarginEnd"/>
 										<Button
 											id="downloadReceiptBtn"
+											text="Download"
 											icon="sap-icon://download"
 											tooltip="Download Receipt"
 											press=".onDownloadReceipt"
