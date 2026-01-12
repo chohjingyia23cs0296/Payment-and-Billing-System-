@@ -185,9 +185,9 @@ sap.ui.define([
          */
         formatStatusIcon(sStatus) {
             const mIconMap = {
-                "Paid": "sap-icon://message-success",
-                "Pending": "sap-icon://warning",
-                "Overdue": "sap-icon://alert"
+                "Paid": "sap-icon://sys-enter-2",
+                "Pending": "sap-icon://alert",
+                "Overdue": "sap-icon://error"
             };
             return mIconMap[sStatus] || "";
         },
