@@ -115,6 +115,14 @@
 					showIcon="true"
 					visible="{= ${/overdueCount} > 0 }"
 					class="sapUiTinyMarginBottom"/>
+				<!-- Pending payments reminder -->
+				<MessageStrip
+					id="pendingMessageStrip"
+					text="{/pendingCount} payments are pending. Please review your upcoming bills."
+					type="Warning"
+					showIcon="true"
+					visible="{= ${/pendingCount} > 0 }"
+					class="sapUiTinyMarginTop sapUiTinyMarginBottom"/>
 				<MessageStrip
 					id="upcomingMessageStrip"
 					text="{/upcomingCount} payment(s) due within 3 days."
