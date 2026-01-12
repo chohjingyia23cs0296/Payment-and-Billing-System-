@@ -379,9 +379,9 @@ sap.ui.define([
                     styleClass: "receiptDialog",
                     actions: [
                         new sap.m.Button({
-                            text: "Download",
+                            text: "Download PDF",
                             icon: "sap-icon://download",
-                            press: () => {
+                            press: function() {
                                 MessageToast.show("Receipt downloaded successfully!");
                                 // In real app: trigger actual PDF download
                             }
