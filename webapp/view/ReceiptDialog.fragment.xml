@@ -7,62 +7,67 @@
 		contentWidth="500px"
 		contentHeight="auto">
 		<customHeader>
-			<Bar>
+			<Bar id="receiptDialogBar">
 				<contentMiddle>
-					<Title text="Payment Receipt" level="H3"/>
+					<Title id="receiptDialogTitle" text="Payment Receipt" level="H3"/>
 				</contentMiddle>
 			</Bar>
 		</customHeader>
 		<content>
 			<!-- Success Banner -->
 			<MessageStrip
+				id="receiptSuccessStrip"
 				type="Success"
 				showIcon="true"
 				text="Payment Completed Successfully"
 				class="sapUiSmallMarginBottom"/>
 
 			<!-- Amount Section -->
-			<VBox alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
+			<VBox id="receiptAmountBox" alignItems="Center" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
 				<Title 
+					id="receiptAmountTitle"
 					text="{receiptData>/currency} {receiptData>/amount}"
 					titleStyle="H1"
-					class="sapUiSmallMarginTop"
-					style="color: #2e7d32; font-size: 3rem;"/>
+					class="sapUiSmallMarginTop sapMObjectNumberLarge"/>
 				<Text 
+					id="receiptPaymentMethodText"
 					text="Paid via {receiptData>/paymentMethod}"
 					class="sapUiTinyMarginTop sapUiTinyMarginBottom"/>
 			</VBox>
 
 			<!-- Receipt Details -->
 			<form:SimpleForm
+				id="receiptDetailsForm"
 				editable="false"
 				layout="ResponsiveGridLayout"
 				class="sapUiSmallMarginBegin sapUiSmallMarginEnd">
 				<form:content>
-					<Label text="Receipt ID"/>
-					<Text text="{receiptData>/receiptId}"/>
+					<Label id="receiptIdLabel" text="Receipt ID"/>
+					<Text id="receiptIdText" text="{receiptData>/receiptId}"/>
 					
-					<Label text="Date"/>
-					<Text text="{receiptData>/paidDate}"/>
+					<Label id="receiptDateLabel" text="Date"/>
+					<Text id="receiptDateText" text="{receiptData>/paidDate}"/>
 					
-					<Label text="Student Name"/>
-					<Text text="{receiptData>/studentName}"/>
+					<Label id="receiptStudentLabel" text="Student Name"/>
+					<Text id="receiptStudentText" text="{receiptData>/studentName}"/>
 					
-					<Label text="Fee Description"/>
-					<Text text="{receiptData>/feeType}"/>
+					<Label id="receiptFeeLabel" text="Fee Description"/>
+					<Text id="receiptFeeText" text="{receiptData>/feeType}"/>
 					
-					<Label text="Details"/>
-					<Text text="{receiptData>/description}"/>
+					<Label id="receiptDetailsLabel" text="Details"/>
+					<Text id="receiptDetailsText" text="{receiptData>/description}"/>
 				</form:content>
 			</form:SimpleForm>
 		</content>
 		<buttons>
 			<Button 
+				id="receiptDownloadBtn"
 				text="Download PDF" 
 				icon="sap-icon://pdf-attachment" 
 				type="Emphasized" 
 				press=".onDownloadPdf"/>
 			<Button 
+				id="receiptCloseBtn"
 				text="Close" 
 				type="Transparent" 
 				press=".onCloseReceiptDialog"/>
